@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book a call · Tom Bobet</title>
+<meta name="description" content="Book a call with Tom Bobet about your ecom brand's product and visuals.">
+<meta property="og:title" content="Book a call · Tom Bobet">
+<meta property="og:description" content="Let's look at your product.">
+<meta property="og:image" content="/assets/avatar.jpg">
+<link rel="icon" href="/assets/avatar.jpg">
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+  .wrap { width: 100%; max-width: 980px; }
+  .hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: clamp(56px, 10vh, 120px); }
+  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; color: var(--ink-3); }
+  h1 {
+    margin-top: 16px; max-width: 12em; font-family: var(--display); font-weight: 600;
+    font-size: clamp(44px, 6vw, 84px); line-height: 1.03; letter-spacing: -.04em; text-wrap: balance;
+  }
+  h1 span { font-weight: 400; color: var(--ink-4); }
+  .lede { margin-top: 24px; max-width: 30em; font-size: 19px; line-height: 1.5; letter-spacing: -.01em; color: var(--ink-2); }
+
+  .steps { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 32px; padding: 0; list-style: none; }
+  .steps li {
+    display: inline-flex; align-items: center; gap: 10px; height: 40px; padding: 0 16px 0 8px; border-radius: 999px;
+    background: var(--surface); box-shadow: var(--shadow); font-size: 15px; font-weight: 500;
+  }
+  .steps b { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: var(--bg); font-size: 13px; }
+
+  .scheduler {
+    margin-top: clamp(40px, 6vh, 64px); background: var(--surface); border-radius: 32px; overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .06), 0 30px 60px -24px rgba(0, 0, 0, .22);
+  }
+  .calendly-inline-widget { min-width: 320px; height: 720px; }
+  .fallback { padding: 18px 24px 22px; border-top: 1px solid var(--line); text-align: center; font-size: 15px; color: var(--ink-3); }
+  .fallback a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: rgba(29, 29, 31, .3); }
+  .fallback a:hover { text-decoration-color: var(--ink); }
+
+  @media (max-width: 560px) {
+    .scheduler { border-radius: 24px; margin-left: calc(var(--gutter) * -0.5); margin-right: calc(var(--gutter) * -0.5); }
+    .calendly-inline-widget { height: 1000px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <nav class="island" aria-label="Main">
+    <a class="me press" href="/"><img src="/assets/avatar.jpg" alt=""><span>Tom Bobet</span></a>
+    <div class="links">
+      <a class="press" href="/about/">about</a>
+      <a class="press" href="/offers/">offers</a>
+      <a class="press book" href="/book/" aria-current="page">book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <div class="hero">
+      <p class="eyebrow">Book a call</p>
+      <h1>Let’s look at <span>your product.</span></h1>
+      <p class="lede">Pick a time below. You show me the product and your ads, I tell you what I’d change, even if we don’t work together.</p>
+      <ol class="steps">
+        <li><b>1</b>Pick a time</li>
+        <li><b>2</b>Send your store link</li>
+        <li><b>3</b>We talk</li>
+      </ol>
+    </div>
+
+    <div class="scheduler">
+      <div class="calendly-inline-widget" data-url="https://calendly.com/tombobet/design-and-ecom?hide_gdpr_banner=1&amp;primary_color=1d1d1f"></div>
+      <p class="fallback">Calendar not loading? <a href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Open it on Calendly</a> or <a href="mailto:tombobetdesign@gmail.com">write to me</a>.</p>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-top">
+      <p class="foot-pitch">Industrial designer who grew up in ecom. <span>I design products, and the visuals that sell them.</span></p>
+      <div class="foot-cols">
+        <div class="foot-col"><b>Site</b><a href="/">Home</a><a href="/about/">About</a><a href="/offers/">Offers</a><a href="/book/">Book a call</a></div>
+        <div class="foot-col"><b>Follow</b><a href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener">YouTube</a><a href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Instagram</a><a href="https://tombobet.substack.com" target="_blank" rel="noopener">Substack</a></div>
+      </div>
+    </div>
+    <span class="foot-word" aria-hidden="true">Tom Bobet</span>
+    <div class="foot-base"><span>© 2026 Tom Bobet</span><span class="live"><i></i><span data-spots>2 spots left</span></span></div>
+  </footer>
+</div>
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+<script src="/assets/site.js"></script>
+</body>
+</html>
