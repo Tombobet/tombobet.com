@@ -3,173 +3,112 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tom Bobet</title>
-<meta name="description" content="Tom Bobet. Industrial designer who grew up in ecom. I design products, and the visuals that sell them.">
+<title>Tom Bobet · Product visuals for ecom brands</title>
+<meta name="description" content="Tom Bobet. Industrial designer who grew up in ecom. I design hero products, and the visuals that sell them.">
 <meta property="og:title" content="Tom Bobet">
-<meta property="og:description" content="I design products that sell.">
-<meta property="og:image" content="assets/avatar.jpg">
-<link rel="icon" href="assets/avatar.jpg">
+<meta property="og:description" content="Industrial designer who grew up in ecom. I design hero products, and the visuals that sell them.">
+<meta property="og:image" content="/assets/avatar.jpg">
+<link rel="icon" href="/assets/avatar.jpg">
 <link rel="stylesheet" href="/assets/site.css">
 <style>
-  /* ---------- hero ---------- */
+  html { scroll-behavior: smooth; }
   main { width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: clamp(56px, 10vh, 120px); }
+  section { width: 100%; max-width: 980px; scroll-margin-top: 96px; }
+  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; color: var(--ink-3); }
+  h2 { margin-top: 14px; font-family: var(--display); font-weight: 600; font-size: clamp(32px, 4vw, 52px); line-height: 1.05; letter-spacing: -.035em; text-wrap: balance; }
+  h2 span { font-weight: 400; color: var(--ink-4); }
+  .quiet { font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: rgba(29, 29, 31, .3); transition: text-decoration-color 200ms ease-out; }
+  .quiet:hover { text-decoration-color: var(--ink); }
 
+  /* ---------- hero ---------- */
   .status {
-    display: inline-flex; align-items: center; gap: 8px;
-    height: 32px; padding: 0 14px; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 14px; border-radius: 999px;
     background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
-    font-size: 13px; font-weight: 500; letter-spacing: .01em;
+    font-size: 13px; font-weight: 500; letter-spacing: .01em; color: var(--ink-3);
   }
   .status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(52, 199, 89, .2); }
-
-  .status { color: var(--ink-3); }
   h1 {
-    margin-top: 28px; max-width: 11em;
-    font-family: var(--display); font-weight: 600;
-    font-size: clamp(48px, 7.2vw, 108px); line-height: 1.02; letter-spacing: -.04em;
-    text-wrap: balance;
+    margin-top: 28px; max-width: 11em; font-family: var(--display); font-weight: 600;
+    font-size: clamp(46px, 7vw, 104px); line-height: 1.02; letter-spacing: -.04em; text-wrap: balance;
   }
   h1 span { font-weight: 400; color: var(--ink-4); }
-
-  .now { width: 100%; max-width: 532px; margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
-  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; color: var(--ink-3); }
-  .now p:not(.eyebrow) { font-size: 19px; line-height: 1.5; letter-spacing: -.01em; color: var(--ink-2); }
-  .now strong { font-weight: 600; color: var(--ink); }
-  .now .quiet { font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: rgba(29, 29, 31, .3); transition: text-decoration-color 200ms ease-out; }
-  .now .quiet:hover { text-decoration-color: var(--ink); }
-
-  /* ---------- links ---------- */
-  .socials { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 36px; }
-  .socials a {
-    display: inline-flex; align-items: center; gap: 8px;
-    height: 48px; padding: 0 20px; border-radius: 999px;
-    background: var(--surface);
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 12px rgba(0, 0, 0, .04);
-    font-size: 15px; font-weight: 500;
+  .lede { margin-top: 28px; max-width: 30em; font-size: 19px; line-height: 1.5; letter-spacing: -.01em; color: var(--ink-2); }
+  .lede strong { font-weight: 600; color: var(--ink); }
+  .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 36px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; border-radius: 999px;
+    background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 12px rgba(0, 0, 0, .04);
+    font-size: 16px; font-weight: 500;
   }
-  .socials a:hover { box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 8px 20px rgba(0, 0, 0, .08); }
-  .socials .primary { background: var(--ink); color: #FFFFFF; padding: 0 22px; }
-  .socials svg { width: 16px; height: 16px; flex: none; }
+  .btn:hover { box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 8px 20px rgba(0, 0, 0, .08); }
+  .btn.primary { background: var(--ink); color: #FFFFFF; font-weight: 600; }
+  .btn.primary:hover { background: #000000; }
+  .btn svg { width: 16px; height: 16px; flex: none; transition: transform 300ms cubic-bezier(.2, .8, .2, 1); }
+  .btn.primary:hover svg { transform: translateX(4px); }
 
   /* ---------- video ---------- */
   .player {
     position: relative; display: block; width: 100%; max-width: 980px;
     margin-top: clamp(56px, 9vh, 96px); aspect-ratio: 16 / 9;
-    border: 0; padding: 0; cursor: pointer; font: inherit;
     border-radius: 28px; overflow: hidden; background: #E8E8ED;
     box-shadow: 0 2px 6px rgba(0, 0, 0, .06), 0 30px 60px -20px rgba(0, 0, 0, .28);
     transition: transform 400ms cubic-bezier(.2, .8, .2, 1);
   }
   .player:hover { transform: translateY(-4px); }
-  .player:active { transform: translateY(-2px) scale(.995); }
-  .player img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .player img, .player video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .player video { pointer-events: none; }
   .player .shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, .35), transparent 45%); }
   .player .cap-row { position: absolute; left: 0; right: 0; bottom: 20px; display: flex; justify-content: center; padding: 0 16px; }
   .player .cap {
-    display: inline-flex; align-items: center; gap: 10px;
-    min-height: 36px; padding: 0 16px; border-radius: 999px;
-    background: rgba(0, 0, 0, .38); border: 1px solid rgba(255, 255, 255, .18);
-    color: #FFFFFF; font-size: 14px; letter-spacing: .005em;
-  }
-  .player .cap span { font-weight: 500; color: rgba(255, 255, 255, .75); }
-  .player .preview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-
-  /* ---------- CTAs ---------- */
-  .ctas { width: 100%; max-width: 980px; margin-top: clamp(80px, 12vh, 140px); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 56px 40px; text-align: left; }
-  .cta { display: flex; flex-direction: column; align-items: flex-start; }
-  .cta .kicker { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, .06); font-size: 13px; font-weight: 600; color: var(--ink-2); }
-  .cta .go { transition: transform 100ms ease-out, background-color 200ms ease-out; }
-  .cta:hover .go { background: #000000; }
-  .cta:active .go { transform: scale(.97); }
-  .cta h2 { margin-top: 22px; font-family: var(--display); font-weight: 600; font-size: clamp(32px, 3.4vw, 46px); line-height: 1.06; letter-spacing: -.03em; text-wrap: balance; }
-  .cta p { margin-top: 12px; max-width: 24em; font-size: 18px; line-height: 1.45; letter-spacing: -.01em; color: var(--ink-3); }
-  .cta .go {
-    margin-top: auto; display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; border-radius: 999px;
-    background: var(--ink); color: #FFFFFF; font-size: 16px; font-weight: 500;
-  }
-  .cta .go svg { width: 16px; height: 16px; transition: transform 300ms cubic-bezier(.2, .8, .2, 1); }
-  .cta:hover .go svg { transform: translateX(4px); }
-  .cta .spacer { height: 32px; }
-
-  .cta .kicker .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(52, 199, 89, .25); }
-
-  /* ---------- a note from Tom ---------- */
-  .note {
-    position: relative; width: 100%; max-width: 980px; margin-top: clamp(96px, 14vh, 160px);
-    display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center;
-    padding: clamp(32px, 5vw, 56px); border-radius: 36px; text-align: left;
-    background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 20px 50px -24px rgba(0, 0, 0, .18);
-  }
-  .note .from { display: flex; align-items: center; gap: 14px; }
-  .note .from img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
-  .note .from b { display: block; font-size: 18px; font-weight: 600; letter-spacing: -.01em; }
-  .note .from span { display: block; margin-top: 1px; font-size: 15px; color: var(--ink-3); }
-  .note .from span strong { font-weight: 600; color: var(--ink); }
-  .note .body { margin-top: 28px; display: flex; flex-direction: column; gap: 16px; }
-  .note .body p { font-size: 19px; line-height: 1.6; letter-spacing: -.01em; color: var(--ink); transition: color 700ms ease-out; }
-  .js-reveal .note .body p { color: #C7C7CC; }
-  .js-reveal .note .body p.in { color: var(--ink); }
-
-  .prints { position: relative; aspect-ratio: 1 / 1.12; margin-right: calc(-1 * clamp(32px, 5vw, 56px) - 72px); }
-  .print {
-    position: absolute; width: 84%; margin: 0; padding: 5px; background: #FFFFFF; border-radius: 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 18px 40px -14px rgba(0, 0, 0, .35);
-    transform: rotate(var(--r)) translate(0, 0); transition: transform 500ms cubic-bezier(.2, .8, .2, 1), box-shadow 500ms ease-out;
-  }
-  .print img { display: block; width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 1px; background: #222; }
-  .print:nth-child(1) { --r: -7deg; top: 2%;  left: 0; }
-  .print:nth-child(2) { --r: 5deg;  top: 20%; left: 22%; }
-  .print:nth-child(3) { --r: -3deg; top: 42%; left: 4%; }
-  .print:nth-child(4) { --r: 8deg;  top: 48%; left: 28%; }
-  .prints:hover .print:nth-child(1) { transform: rotate(-10deg) translate(-12px, -10px); }
-  .prints:hover .print:nth-child(2) { transform: rotate(8deg) translate(14px, -12px); }
-  .prints:hover .print:nth-child(3) { transform: rotate(-6deg) translate(-14px, 10px); }
-  .prints:hover .print:nth-child(4) { transform: rotate(11deg) translate(14px, 12px); }
-  .print:hover { z-index: 5; box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 28px 50px -14px rgba(0, 0, 0, .4); }
-
-  @media (max-width: 760px) {
-    .note { grid-template-columns: 1fr; }
-    .prints { order: -1; width: 100%; max-width: 420px; margin: 0 auto; }
-    .print { width: 78%; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .print, .note .body p { transition: none; }
-    .prints:hover .print { transform: rotate(var(--r)); }
+    display: inline-flex; align-items: center; min-height: 36px; padding: 0 16px; border-radius: 999px;
+    background: rgba(0, 0, 0, .38); border: 1px solid rgba(255, 255, 255, .18); color: #FFFFFF; font-size: 14px;
   }
 
-  /* ---------- logos ---------- */
-  .logos { width: 100%; max-width: 980px; margin-top: clamp(80px, 12vh, 140px); }
-  .logos .eyebrow { text-align: center; }
-  .marquee {
-    margin-top: 28px; overflow: hidden;
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-            mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-  }
-  .marquee .track { display: flex; width: max-content; animation: logos 40s linear infinite; }
-  .marquee:hover .track { animation-play-state: paused; }
-  .marquee ul { display: flex; align-items: center; gap: clamp(48px, 7vw, 88px); padding: 8px clamp(24px, 3.5vw, 44px); margin: 0; list-style: none; }
-  .marquee img {
-    width: auto; max-width: none; height: var(--h, 26px);
-    filter: grayscale(1) brightness(0); opacity: .5; transition: opacity 300ms ease-out;
-  }
-  .marquee li:hover img { opacity: .85; }
-  @keyframes logos { to { transform: translateX(-50%); } }
+  /* ---------- work ---------- */
+  .work-sec { margin-top: clamp(96px, 14vh, 160px); }
+  .work { display: grid; gap: 16px; margin-top: 40px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); text-align: left; }
+  .work figure { margin: 0; }
+  .work .shot { overflow: hidden; border-radius: 20px; background: #E8E8ED; box-shadow: var(--shadow); }
+  .work img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; transition: transform 600ms cubic-bezier(.2, .8, .2, 1); }
+  .work figure:hover img { transform: scale(1.04); }
+  .work figcaption { margin-top: 12px; font-size: 15px; color: var(--ink-3); }
+  .work figcaption b { display: block; font-size: 17px; font-weight: 600; letter-spacing: -.01em; color: var(--ink); }
+  .tag { display: inline-block; margin-bottom: 6px; padding: 2px 9px; border-radius: 999px; background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, .06); font-size: 12px; font-weight: 600; color: var(--ink-2); }
 
-  /* ---------- accessibility ---------- */
-  @media (prefers-reduced-motion: reduce) {
-    .player { transition: none; }
-    .player:hover, .player:active { transform: none; }
-    .marquee { -webkit-mask-image: none; mask-image: none; }
-    .marquee .track { animation: none; width: auto; justify-content: center; }
-    .marquee ul { flex-wrap: wrap; justify-content: center; row-gap: 28px; }
-    .marquee ul[aria-hidden] { display: none; }
-  }
-  @media (prefers-reduced-transparency: reduce) {
-    .player .cap { background: rgba(0, 0, 0, .7); }
-  }
-  @media (max-width: 480px) {
+  /* ---------- now + next ---------- */
+  .duo { margin-top: clamp(96px, 14vh, 160px); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; text-align: left; }
+  .card { display: flex; flex-direction: column; align-items: flex-start; padding: clamp(28px, 4vw, 44px); border-radius: 32px; background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 20px 50px -24px rgba(0, 0, 0, .18); }
+  .card .kicker { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: var(--bg); font-size: 13px; font-weight: 600; color: var(--ink-2); }
+  .card .kicker .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(52, 199, 89, .25); }
+  .card h3 { margin-top: 20px; font-family: var(--display); font-weight: 600; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.1; letter-spacing: -.03em; text-wrap: balance; }
+  .card p { margin-top: 12px; font-size: 17px; line-height: 1.5; color: var(--ink-3); }
+  .card ul { margin-top: 18px; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .card li { height: 34px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 999px; background: var(--bg); font-size: 14px; font-weight: 500; color: var(--ink-2); }
+  .card .links { margin-top: auto; padding-top: 24px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .card .links a { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; background: var(--bg); font-size: 15px; font-weight: 500; }
+  .card .links a:hover { background: #E8E8ED; }
+
+  /* ---------- book ---------- */
+  .book-sec { margin-top: clamp(96px, 14vh, 160px); }
+  .book-sec .lede { margin-left: auto; margin-right: auto; }
+  .scheduler { margin-top: clamp(32px, 5vh, 56px); background: var(--surface); border-radius: 32px; overflow: hidden; box-shadow: 0 2px 6px rgba(0, 0, 0, .06), 0 30px 60px -24px rgba(0, 0, 0, .22); }
+  .calendly-inline-widget { min-width: 320px; height: 720px; }
+  .fallback { padding: 18px 24px 22px; border-top: 1px solid var(--line); font-size: 15px; color: var(--ink-3); }
+
+  /* island with a single action */
+  .island .me { padding-right: 14px; }
+
+  @media (max-width: 560px) {
     .player { border-radius: 20px; }
-    .player .cap { font-size: 13px; }
+    .scheduler { border-radius: 24px; margin-left: calc(var(--gutter) * -0.5); margin-right: calc(var(--gutter) * -0.5); width: auto; }
+    .calendly-inline-widget { height: 1000px; }
+    .island .me span { display: inline; }
+  }
+  @media (max-width: 360px) { .island .me span { display: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .player, .work img { transition: none; }
+    .player:hover, .work figure:hover img { transform: none; }
   }
 </style>
 </head>
@@ -177,125 +116,69 @@
 <div class="page">
 
   <nav class="island" aria-label="Main">
-    <a class="me press" href="/"><img src="/assets/avatar.jpg" alt=""><span>Tom Bobet</span></a>
+    <a class="me press" href="#top"><img src="/assets/avatar.jpg" alt=""><span>Tom Bobet</span></a>
     <div class="links">
-      <a class="press" href="/about/">about</a>
-      <a class="press" href="/offers/">offers</a>
-      <a class="press book" href="/book/">book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="press book" href="#book">book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </nav>
 
-  <main>
+  <main id="top">
+    <!-- 1. Hero -->
     <p class="status"><span class="dot"></span><span><time id="clock">20:00</time> in <span id="city">Paris</span> · <span id="offset">GMT+1</span></span></p>
-    <h1>I design products <span>that sell.</span></h1>
-
-    <div class="now">
-      <p class="eyebrow">Current position:</p>
-      <p>I’m 22, finishing an <strong>industrial design master’s</strong> at ISD Rubika and filming my last months as a student on <a class="quiet" href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener">YouTube</a>.</p>
-      <p>Five years of ecom side hustles taught me the business side. Now I design <a class="quiet" href="/offers/">visuals and products for ecom brands</a>. I write about it on <a class="quiet" href="https://tombobet.substack.com" target="_blank" rel="noopener">Substack</a> and share the process on <a class="quiet" href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Instagram</a>.</p>
+    <h1>I design products <span>and the visuals that sell them.</span></h1>
+    <p class="lede">Industrial designer who grew up in ecom. I make <strong>renders, ad creatives and brand visuals</strong> for ecom brands that want their hero product to look like the best on the market.</p>
+    <div class="actions">
+      <a class="btn primary press" href="#book">Book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="btn press" href="#work">See the work</a>
     </div>
 
-    <div class="socials">
-      <a class="press primary" href="mailto:tombobetdesign@gmail.com">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="m22 7-10 6L2 7"/></svg>
-        Write to me
-      </a>
-      <a class="press" href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="1.5" y="4.5" width="21" height="15" rx="4"/><path d="M10 9v6l5-3z" fill="currentColor"/></svg>
-        YouTube
-      </a>
-      <a class="press" href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r=".6" fill="currentColor"/></svg>
-        Instagram
-      </a>
-      <a class="press" href="https://tombobet.substack.com" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16M4 9h16M4 14h16v6l-8-4-8 4z"/></svg>
-        Substack
-      </a>
-    </div>
-
-    <a class="player" id="player" href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener" aria-label="Sharing my journey on YouTube">
-      <img src="assets/videoaboutme-poster.jpg" alt="">
-      <video class="preview" id="preview" autoplay muted loop playsinline preload="auto" poster="assets/videoaboutme-poster.jpg" aria-hidden="true"><source src="assets/videoaboutme-web.mp4" type="video/mp4"></video>
+    <a class="player" href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener" aria-label="Watch my journey on YouTube">
+      <img src="/assets/videoaboutme-poster.jpg" alt="">
+      <video id="preview" autoplay muted loop playsinline preload="auto" poster="/assets/videoaboutme-poster.jpg" aria-hidden="true"><source src="/assets/videoaboutme-web.mp4" type="video/mp4"></video>
       <span class="shade"></span>
-      <span class="cap-row"><span class="cap glass">Sharing my journey on YouTube</span></span>
+      <span class="cap-row"><span class="cap glass">Watch the process on YouTube</span></span>
     </a>
 
-    <section class="ctas">
-      <a class="cta" href="/offers/">
-        <span class="kicker"><span class="dot"></span>For ecom brands</span>
-        <h2>Product visuals that make your ads sell.</h2>
-        <p>Renders, ad creatives and brand images for your hero product. Every month.</p>
-        <span class="spacer"></span>
-        <span class="go">See the offer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-      <a class="cta" href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">
-        <span class="kicker">Designers & builders</span>
-        <h2>Designer too? Let’s talk.</h2>
-        <p>School, ecom, side projects. I’m always up for comparing notes with people on the same road.</p>
-        <span class="spacer"></span>
-        <span class="go">Message me on Instagram <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
-      </a>
-    </section>
-
-    <section class="note" aria-labelledby="note-title">
-      <div>
-        <div class="from">
-          <img src="/assets/avatar.jpg" alt="">
-          <div><b id="note-title">A note from Tom</b><span><strong>Tom Bobet</strong>, designer</span></div>
-        </div>
-        <div class="body">
-          <p>I’ve been chasing a lot of business ideas over the past years, between Europe and America, all while studying industrial design.</p>
-          <p>Now my studies are coming to an end, and I’ve started making a bit of money with creative freelance missions: a book, a video shoot, a brand identity…</p>
-          <p>Now I want to bring them all together and build my own design agency. Solo for now, but not for long.</p>
-          <p>A lot of good moments to share with good people ahead. So make sure you join me.</p>
-        </div>
-      </div>
-      <div class="prints" aria-label="Photos of Tom with friends">
-        <figure class="print"><img src="/assets/photos/friend-2.jpg" alt="A group of friends walking down a street at night" loading="lazy"></figure>
-        <figure class="print"><img src="/assets/photos/friend-1.jpg" alt="Two friends talking at a table in front of a painting" loading="lazy"></figure>
-        <figure class="print"><img src="/assets/photos/friend-4.jpg" alt="Tom and a friend smiling at the camera" loading="lazy"></figure>
+    <!-- 2. Proof -->
+    <section class="work-sec" id="work" aria-labelledby="work-title">
+      <p class="eyebrow">Selected work</p>
+      <h2 id="work-title">Products, <span>and the visuals that sell them.</span></h2>
+      <div class="work">
+        <figure><div class="shot"><img src="/assets/work/essense.jpg" alt="A brown Essense supplement pouch on a clean studio background" loading="lazy"></div><figcaption><span class="tag">Client</span><b>Essense</b>Branding and packaging</figcaption></figure>
+        <figure><div class="shot"><img src="/assets/work/milestone.jpg" alt="A blue Milestone watch on a wrist, next to its launch poster" loading="lazy"></div><figcaption><span class="tag">Own brand</span><b>Milestone</b>Product design, branding and launch visuals</figcaption></figure>
+        <figure><div class="shot"><img src="/assets/work/dji-halo.jpg" alt="Close-up render of a black DJI camera concept, Made for B-roll" loading="lazy"></div><figcaption><span class="tag">Concept</span><b>DJI · Halo</b>Product design and renders</figcaption></figure>
       </div>
     </section>
 
-    <!-- Logos: the list repeats so the loop is seamless. Add a logo to every <ul>. -->
-    <section class="logos" aria-labelledby="logos-title">
-      <p class="eyebrow" id="logos-title">Companies I’ve worked with</p>
-      <div class="marquee">
-        <div class="track">
-          <ul>
-            <li><img src="/assets/logos/l-acoustics.svg" alt="L-Acoustics" style="--h: 16px"></li>
-            <li><img src="/assets/logos/haier.svg" alt="Haier" style="--h: 30px"></li>
-            <li><img src="/assets/logos/decathlon.svg" alt="Decathlon" style="--h: 24px"></li>
-            <li><img src="/assets/logos/lynkco.svg" alt="Lynk &amp; Co" style="--h: 22px"></li>
-            <li><img src="/assets/logos/crooked.png" alt="Crooked" style="--h: 20px"></li>
-            <li><img src="/assets/logos/essense.png" alt="Essense" style="--h: 28px"></li>
-          </ul>
-          <ul aria-hidden="true">
-            <li><img src="/assets/logos/l-acoustics.svg" alt="" style="--h: 16px"></li>
-            <li><img src="/assets/logos/haier.svg" alt="" style="--h: 30px"></li>
-            <li><img src="/assets/logos/decathlon.svg" alt="" style="--h: 24px"></li>
-            <li><img src="/assets/logos/lynkco.svg" alt="" style="--h: 22px"></li>
-            <li><img src="/assets/logos/crooked.png" alt="" style="--h: 20px"></li>
-            <li><img src="/assets/logos/essense.png" alt="" style="--h: 28px"></li>
-          </ul>
-          <ul aria-hidden="true">
-            <li><img src="/assets/logos/l-acoustics.svg" alt="" style="--h: 16px"></li>
-            <li><img src="/assets/logos/haier.svg" alt="" style="--h: 30px"></li>
-            <li><img src="/assets/logos/decathlon.svg" alt="" style="--h: 24px"></li>
-            <li><img src="/assets/logos/lynkco.svg" alt="" style="--h: 22px"></li>
-            <li><img src="/assets/logos/crooked.png" alt="" style="--h: 20px"></li>
-            <li><img src="/assets/logos/essense.png" alt="" style="--h: 28px"></li>
-          </ul>
-          <ul aria-hidden="true">
-            <li><img src="/assets/logos/l-acoustics.svg" alt="" style="--h: 16px"></li>
-            <li><img src="/assets/logos/haier.svg" alt="" style="--h: 30px"></li>
-            <li><img src="/assets/logos/decathlon.svg" alt="" style="--h: 24px"></li>
-            <li><img src="/assets/logos/lynkco.svg" alt="" style="--h: 22px"></li>
-            <li><img src="/assets/logos/crooked.png" alt="" style="--h: 20px"></li>
-            <li><img src="/assets/logos/essense.png" alt="" style="--h: 28px"></li>
-          </ul>
+    <!-- 3. Now + 4. The door -->
+    <section class="duo" aria-label="What I do">
+      <div class="card">
+        <span class="kicker"><span class="dot"></span>Taking projects now</span>
+        <h3>Freelance visuals for ecom brands already selling.</h3>
+        <p>You have a product and ads running. I make it look like the brand it should be.</p>
+        <ul><li>3D product renders</li><li>Ad creatives</li><li>Packaging</li><li>Brand visuals</li></ul>
+        <div class="links"><a class="press" href="#book">Book a call</a></div>
+      </div>
+      <div class="card">
+        <span class="kicker">2027</span>
+        <h3>Building a design studio for ecom brands and designers.</h3>
+        <p>From dropshipped product to a brand’s own designed product. I’m documenting the whole build.</p>
+        <div class="links">
+          <a class="press" href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener">YouTube</a>
+          <a class="press" href="https://tombobet.substack.com" target="_blank" rel="noopener">Substack</a>
+          <a class="press" href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Instagram</a>
         </div>
+      </div>
+    </section>
+
+    <!-- 5. Call to action -->
+    <section class="book-sec" id="book" aria-labelledby="book-title">
+      <p class="eyebrow">Book a call</p>
+      <h2 id="book-title">Let’s look at your brand.</h2>
+      <p class="lede">A short call. I’ll tell you what I’d change, even if we don’t work together.</p>
+      <div class="scheduler">
+        <div class="calendly-inline-widget" data-url="https://calendly.com/tombobet/design-and-ecom?hide_gdpr_banner=1&amp;primary_color=1d1d1f"></div>
+        <p class="fallback">Calendar not loading? <a class="quiet" href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Open it on Calendly</a> or <a class="quiet" href="mailto:tombobetdesign@gmail.com">write to me</a>.</p>
       </div>
     </section>
   </main>
@@ -304,20 +187,18 @@
     <div class="foot-top">
       <p class="foot-pitch">Industrial designer who grew up in ecom. <span>I design products, and the visuals that sell them.</span></p>
       <div class="foot-cols">
-        <div class="foot-col"><b>Site</b><a href="/">Home</a><a href="/about/">About</a><a href="/offers/">Offers</a><a href="/book/">Book a call</a></div>
+        <div class="foot-col"><b>Contact</b><a href="#book">Book a call</a><a href="mailto:tombobetdesign@gmail.com">Email</a></div>
         <div class="foot-col"><b>Follow</b><a href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener">YouTube</a><a href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Instagram</a><a href="https://tombobet.substack.com" target="_blank" rel="noopener">Substack</a></div>
       </div>
     </div>
     <span class="foot-word" aria-hidden="true">Tom Bobet</span>
-    <div class="foot-base"><span>© 2026 Tom Bobet</span><span class="live"><i></i><span data-spots>2 spots left</span></span></div>
+    <div class="foot-base"><span>© 2026 Tom Bobet</span><span class="live"><i></i><span>Taking projects</span></span></div>
   </footer>
 </div>
 
 <script>
   // Where Tom is right now: the pill shows his local time, the capital and the GMT offset.
-  // Later, a phone automation can update this value when he changes country.
   var CURRENT_COUNTRY = "France";
-
   var PLACES = {
     "France": ["Paris", "Europe/Paris"], "Spain": ["Madrid", "Europe/Madrid"],
     "Germany": ["Berlin", "Europe/Berlin"], "Italy": ["Rome", "Europe/Rome"],
@@ -332,38 +213,21 @@
     var zone = new Intl.DateTimeFormat("en-GB", { timeZone: place[1], timeZoneName: "shortOffset" });
     document.getElementById("city").textContent = place[0];
     function tick() {
-      var now = new Date();
-      var el = document.getElementById("clock");
-      el.textContent = clock.format(now);
-      el.dateTime = now.toISOString();
+      var now = new Date(), el = document.getElementById("clock");
+      el.textContent = clock.format(now); el.dateTime = now.toISOString();
       var off = zone.formatToParts(now).find(function (p) { return p.type === "timeZoneName"; });
       document.getElementById("offset").textContent = off ? off.value : "";
     }
-    tick();
-    setInterval(tick, 15000);
+    tick(); setInterval(tick, 15000);
   })();
 
-  // The video always plays muted on loop, with no sound option.
+  // The video always plays muted on loop.
   (function () {
-    var v = document.getElementById("preview");
-    v.muted = true;
+    var v = document.getElementById("preview"); v.muted = true;
     var p = v.play();
-    if (p && p.catch) p.catch(function () {
-      document.addEventListener("pointerdown", function () { v.play(); }, { once: true });
-    });
+    if (p && p.catch) p.catch(function () { document.addEventListener("pointerdown", function () { v.play(); }, { once: true }); });
   })();
-
-  // The note's paragraphs darken one by one as they scroll into view.
-  (function () {
-    if (!("IntersectionObserver" in window) || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    document.documentElement.classList.add("js-reveal");
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-    }, { rootMargin: "0px 0px -30% 0px" });
-    document.querySelectorAll(".note .body p").forEach(function (p) { io.observe(p); });
-  })();
-
 </script>
-<script src="/assets/site.js"></script>
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 </body>
 </html>
