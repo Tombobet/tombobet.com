@@ -12,7 +12,60 @@
 <link rel="stylesheet" href="/assets/site.css">
 <style>
   html { scroll-behavior: smooth; }
-  main { width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: clamp(56px, 10vh, 120px); }
+  main { width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: clamp(96px, 12vh, 140px); scroll-margin-top: 0; }
+
+  /* ---------- intro: full-screen loop, the island floats over it ---------- */
+  .intro {
+    position: relative; overflow: hidden; z-index: 1;
+    width: 100vw; height: 100vh; height: 100svh;
+    margin: -72px calc(50% - 50vw) 0; background: #F4F4F4;
+  }
+  /* desktop: the video sits smaller in the middle, on its own background colour so the edges vanish */
+  .intro video {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: min(64vw, 108vh, 1100px); height: auto; aspect-ratio: 16 / 9; object-fit: contain;
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(transparent, #000 5%, #000 95%, transparent);
+    -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(transparent, #000 5%, #000 95%, transparent);
+    mask-composite: intersect;
+  }
+  @media (min-aspect-ratio: 1/1) { .intro { background: #F5F5F5; } }
+  .intro .cue {
+    position: absolute; left: 50%; bottom: max(24px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 3;
+    display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 999px;
+    background: rgba(255, 255, 255, .72); border: 1px solid rgba(255, 255, 255, .6);
+    -webkit-backdrop-filter: blur(20px) saturate(180%); backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 10px 24px -10px rgba(0, 0, 0, .2);
+    font-size: 14px; font-weight: 500; color: var(--ink-2);
+  }
+  .intro .cue svg { width: 15px; height: 15px; animation: nudge 1.6s ease-in-out infinite; }
+  @keyframes nudge { 50% { transform: translateY(3px); } }
+
+  /* portrait screens: the same animation, live, laid out for a tall screen */
+  .reel { display: none; position: absolute; left: 50%; top: 50%; width: 390px; height: 844px; transform: translate(-50%, -50%) scale(var(--k, 1)); font-family: var(--display); color: #111111; }
+  @media (max-aspect-ratio: 1/1) {
+    .intro video { display: none; }
+    .reel { display: block; }
+  }
+  .reel .scene { position: absolute; inset: 0; }
+  .reel .scene[hidden] { display: none; }
+  .reel .hl { position: absolute; left: 20px; right: 20px; margin: 0; text-align: center; font-weight: 700; letter-spacing: -.035em; line-height: 1.02; text-wrap: balance; }
+  .reel .w { display: inline-block; animation: wIn 760ms cubic-bezier(.2, .75, .2, 1) both; }
+  @keyframes wIn { 0% { opacity: 0; filter: blur(12px); transform: translateY(.28em); color: #BDBDBD; } 60% { color: #6B6B6B; } 100% { opacity: 1; filter: blur(0); transform: none; color: inherit; } }
+  .reel .ul2 { display: inline; position: relative; color: #8CCBFF; background: linear-gradient(#8CCBFF, #8CCBFF) left bottom / 0% .085em no-repeat; animation: ulGrow 620ms cubic-bezier(.3, .7, .2, 1) 1150ms forwards; }
+  .reel .ul2 .w { animation-name: wInKeep; }
+  @keyframes wInKeep { 0% { opacity: 0; filter: blur(12px); transform: translateY(.28em); } 100% { opacity: 1; filter: blur(0); transform: none; } }
+  @keyframes ulGrow { to { background-size: 100% .085em; } }
+  .reel .hot { color: #FF4A12; animation-name: wInKeep; }
+  .reel .out { animation: sceneOut 460ms cubic-bezier(.5, 0, .75, 0) both; }
+  @keyframes sceneOut { to { opacity: 0; filter: blur(10px); transform: translateY(-36px); } }
+  .reel .anchor { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
+  .reel .me { position: absolute; max-width: none; object-fit: contain; filter: drop-shadow(0 16px 22px rgba(0, 0, 0, .18)) drop-shadow(0 3px 6px rgba(0, 0, 0, .08)); transform: rotate(var(--r, 0deg)); }
+  .reel .drop { animation: drop 680ms cubic-bezier(.2, .9, .25, 1.15) both; }
+  @keyframes drop { 0% { opacity: 0; transform: translateY(-70px) rotate(calc(var(--r, 0deg) + 14deg)) scale(1.3); } 100% { opacity: 1; transform: rotate(var(--r, 0deg)); } }
+  .reel .pop { animation: pop 560ms cubic-bezier(.2, .9, .3, 1.35) both; }
+  @keyframes pop { 0% { opacity: 0; transform: translateY(40px) rotate(calc(var(--r, 0deg) - 10deg)) scale(.4); } 100% { opacity: 1; transform: rotate(var(--r, 0deg)); } }
+  .reel .down { animation: down 950ms cubic-bezier(.65, 0, .2, 1) both; }
+  @keyframes down { to { transform: translateY(var(--dy)) scale(var(--ds)); } }
   section { width: 100%; max-width: 980px; scroll-margin-top: 96px; }
   .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; color: var(--ink-3); }
   h2 { margin-top: 14px; font-family: var(--display); font-weight: 600; font-size: clamp(32px, 4vw, 52px); line-height: 1.05; letter-spacing: -.035em; text-wrap: balance; }
@@ -116,11 +169,63 @@
 <div class="page">
 
   <nav class="island" aria-label="Main">
-    <a class="me press" href="#top"><img src="/assets/avatar.jpg" alt=""><span>Tom Bobet</span></a>
+    <a class="me press" href="#intro"><img src="/assets/avatar.jpg" alt=""><span>Tom Bobet</span></a>
     <div class="links">
       <a class="press book" href="#book">book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </nav>
+
+  <section class="intro" id="intro" aria-label="Intro: Hi, I am Tom. I design products and the visuals that sell them, and document it all on my socials.">
+    <video id="introVideo" muted loop playsinline preload="none" aria-hidden="true" data-src="/assets/tom-intro-v1.mp4"></video>
+
+    <div class="reel" id="reel" aria-hidden="true">
+      <div class="scene" data-s="0">
+        <div class="out" style="position:absolute;inset:0;animation-delay:1950ms">
+          <p class="hl" style="top:372px;font-size:68px"><span class="w">Hi,</span> <span class="w" style="animation-delay:130ms">I</span> <span class="w" style="animation-delay:260ms">am</span> <span class="w" style="animation-delay:390ms">Tom</span></p>
+        </div>
+      </div>
+      <div class="scene" data-s="1" hidden>
+        <div class="anchor">
+          <img class="me drop" src="/assets/intro-dancers.png" alt="" style="left:86px;top:-120px;width:82px;height:97px;animation-delay:720ms">
+          <img class="me drop" src="/assets/intro-tom.png" alt="" style="left:-104px;top:-198px;width:251px;height:397px;animation-delay:100ms">
+          <img class="me pop" src="/assets/intro-osmo.png" alt="" style="left:-167px;top:-72px;width:81px;height:202px;animation-delay:520ms">
+        </div>
+      </div>
+      <div class="scene" data-s="2" hidden>
+        <div class="out" style="position:absolute;inset:0;animation-delay:3150ms">
+          <div class="anchor down" style="--dy:205px;--ds:.5">
+            <img class="me" src="/assets/intro-dancers.png" alt="" style="left:86px;top:-120px;width:82px;height:97px">
+            <img class="me" src="/assets/intro-tom.png" alt="" style="left:-104px;top:-198px;width:251px;height:397px">
+            <img class="me" src="/assets/intro-osmo.png" alt="" style="left:-167px;top:-72px;width:81px;height:202px">
+          </div>
+          <p class="hl" style="top:150px;font-size:48px"><span class="ul2"><span class="w" style="animation-delay:450ms">I</span> <span class="w" style="animation-delay:530ms">design</span> <span class="w" style="animation-delay:610ms">products</span></span> <span class="w" style="animation-delay:690ms">and</span> <span class="w" style="animation-delay:770ms">the</span> <span class="w" style="animation-delay:850ms">visuals</span> <span class="w" style="animation-delay:930ms">that</span> <span class="w hot" style="animation-delay:1010ms">sell</span> <span class="w hot" style="animation-delay:1090ms">them.</span></p>
+        </div>
+      </div>
+      <div class="scene" data-s="3" hidden>
+        <div class="anchor">
+          <img class="me pop" src="/assets/intro-glasses.png" alt="" style="--r:4deg;left:-120px;top:-330px;width:240px;height:73px;animation-delay:240ms">
+          <img class="me pop" src="/assets/intro-essense.png" alt="" style="--r:-8deg;left:-175px;top:-220px;width:140px;height:183px">
+          <img class="me pop" src="/assets/intro-watch.png" alt="" style="--r:8deg;left:60px;top:-235px;width:80px;height:217px;animation-delay:480ms">
+          <img class="me pop" src="/assets/intro-camera.png" alt="" style="--r:-5deg;left:-165px;top:0;width:250px;height:132px;animation-delay:120ms">
+          <img class="me pop" src="/assets/intro-bracelet.png" alt="" style="--r:6deg;left:-60px;top:170px;width:240px;height:83px;animation-delay:360ms">
+        </div>
+      </div>
+      <div class="scene" data-s="4" hidden>
+        <div class="out" style="position:absolute;inset:0;animation-delay:4150ms">
+          <div class="anchor down" style="--dy:195px;--ds:.42">
+            <img class="me" src="/assets/intro-glasses.png" alt="" style="--r:4deg;left:-120px;top:-330px;width:240px;height:73px">
+            <img class="me" src="/assets/intro-essense.png" alt="" style="--r:-8deg;left:-175px;top:-220px;width:140px;height:183px">
+            <img class="me" src="/assets/intro-watch.png" alt="" style="--r:8deg;left:60px;top:-235px;width:80px;height:217px">
+            <img class="me" src="/assets/intro-camera.png" alt="" style="--r:-5deg;left:-165px;top:0;width:250px;height:132px">
+            <img class="me" src="/assets/intro-bracelet.png" alt="" style="--r:6deg;left:-60px;top:170px;width:240px;height:83px">
+          </div>
+          <p class="hl" style="top:170px;font-size:52px"><span class="w" style="animation-delay:450ms">And</span> <span class="ul2"><span class="w" style="animation-delay:540ms">document</span> <span class="w" style="animation-delay:630ms">it</span> <span class="w" style="animation-delay:720ms">all</span></span><br><span class="w" style="animation-delay:810ms">on</span> <span class="w" style="animation-delay:900ms">my</span> <span class="w" style="animation-delay:990ms">socials</span></p>
+        </div>
+      </div>
+    </div>
+
+    <a class="cue press" href="#top">Scroll <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+  </section>
 
   <main id="top">
     <!-- 1. Hero -->
@@ -219,6 +324,42 @@
       document.getElementById("offset").textContent = off ? off.value : "";
     }
     tick(); setInterval(tick, 15000);
+  })();
+
+  // Intro: wide screens loop the MP4, tall screens loop the same animation built for portrait.
+  (function () {
+    var intro = document.getElementById("intro"), video = document.getElementById("introVideo"), reel = document.getElementById("reel");
+    var portrait = window.matchMedia("(max-aspect-ratio: 1/1)");
+    var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var scenes = reel.querySelectorAll(".scene"), durations = [2450, 1900, 3650, 1700, 4650, 700];
+    var timer = null, scene = 0, visible = true;
+
+    function fit() { reel.style.setProperty("--k", Math.min(intro.clientWidth / 390, intro.clientHeight / 844)); }
+    function show(i) { scene = i; scenes.forEach(function (el, n) { el.hidden = n !== i; }); }
+    function step() {
+      timer = setTimeout(function () { show((scene + 1) % durations.length); step(); }, durations[scene]);
+    }
+    function stopReel() { clearTimeout(timer); timer = null; }
+    function startReel() { stopReel(); if (still) { show(2); return; } show(0); step(); }
+
+    function run() {
+      if (portrait.matches) {
+        video.pause(); fit();
+        if (visible && !timer) startReel();
+      } else {
+        stopReel();
+        if (!video.src) video.src = video.dataset.src;
+        if (still) { video.currentTime = 6; return; }
+        if (visible) { var p = video.play(); if (p && p.catch) p.catch(function () {}); } else video.pause();
+      }
+    }
+    new IntersectionObserver(function (e) {
+      visible = e[0].isIntersecting;
+      if (!visible) { stopReel(); video.pause(); } else run();
+    }).observe(intro);
+    portrait.addEventListener("change", run);
+    window.addEventListener("resize", fit);
+    run();
   })();
 
   // The video always plays muted on loop.
