@@ -17,18 +17,9 @@
   /* ---------- intro: full-screen loop, the island floats over it ---------- */
   .intro {
     position: relative; overflow: hidden; z-index: 1;
-    width: 100vw; height: 100vh; height: 100svh;
+    width: 100vw; max-width: none; height: 100vh; height: 100svh;
     margin: -72px calc(50% - 50vw) 0; background: #F4F4F4;
   }
-  /* desktop: the video sits smaller in the middle, on its own background colour so the edges vanish */
-  .intro video {
-    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
-    width: min(64vw, 108vh, 1100px); height: auto; aspect-ratio: 16 / 9; object-fit: contain;
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(transparent, #000 5%, #000 95%, transparent);
-    -webkit-mask-composite: source-in; mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent), linear-gradient(transparent, #000 5%, #000 95%, transparent);
-    mask-composite: intersect;
-  }
-  @media (min-aspect-ratio: 1/1) { .intro { background: #F6F6F6; } }
   .intro .cue {
     position: absolute; left: 50%; bottom: max(24px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 3;
     display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 999px;
@@ -42,10 +33,11 @@
 
   /* portrait screens: the same animation, live, laid out for a tall screen */
   .reel { display: none; position: absolute; left: 50%; top: 50%; width: 390px; height: 844px; transform: translate(-50%, -50%) scale(var(--k, 1)); font-family: var(--display); color: #111111; }
-  @media (max-aspect-ratio: 1/1) {
-    .intro video { display: none; }
-    .reel { display: block; }
-  }
+  /* wide screens: the original 1440 x 810 layout, shown smaller in the middle */
+  .reel.wide { width: 1440px; height: 810px; }
+  .reel.wide .me { filter: drop-shadow(0 22px 30px rgba(0, 0, 0, .18)) drop-shadow(0 3px 6px rgba(0, 0, 0, .08)); }
+  @media (min-aspect-ratio: 1/1) { .reel.wide { display: block; } }
+  @media (max-aspect-ratio: 1/1) { .reel.tall { display: block; } }
   .reel .scene { position: absolute; inset: 0; }
   .reel .scene[hidden] { display: none; }
   .reel .hl { position: absolute; left: 20px; right: 20px; margin: 0; text-align: center; font-weight: 700; letter-spacing: -.035em; line-height: 1.02; text-wrap: balance; }
@@ -55,7 +47,7 @@
   .reel .ul2 .w { animation-name: wInKeep; }
   @keyframes wInKeep { 0% { opacity: 0; filter: blur(12px); transform: translateY(.28em); } 100% { opacity: 1; filter: blur(0); transform: none; } }
   @keyframes ulGrow { to { background-size: 100% .085em; } }
-  .reel .hot { color: #FF4A12; animation-name: wInKeep; }
+  .reel .hot { color: #111111; animation-name: wInKeep; }
   .reel .out { animation: sceneOut 460ms cubic-bezier(.5, 0, .75, 0) both; }
   @keyframes sceneOut { to { opacity: 0; filter: blur(10px); transform: translateY(-36px); } }
   .reel .anchor { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
@@ -117,16 +109,6 @@
     background: rgba(0, 0, 0, .38); border: 1px solid rgba(255, 255, 255, .18); color: #FFFFFF; font-size: 14px;
   }
 
-  /* ---------- work ---------- */
-  .work-sec { margin-top: clamp(96px, 14vh, 160px); }
-  .work { display: grid; gap: 16px; margin-top: 40px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); text-align: left; }
-  .work figure { margin: 0; }
-  .work .shot { overflow: hidden; border-radius: 20px; background: #E8E8ED; box-shadow: var(--shadow); }
-  .work img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; transition: transform 600ms cubic-bezier(.2, .8, .2, 1); }
-  .work figure:hover img { transform: scale(1.04); }
-  .work figcaption { margin-top: 12px; font-size: 15px; color: var(--ink-3); }
-  .work figcaption b { display: block; font-size: 17px; font-weight: 600; letter-spacing: -.01em; color: var(--ink); }
-  .tag { display: inline-block; margin-bottom: 6px; padding: 2px 9px; border-radius: 999px; background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, .06); font-size: 12px; font-weight: 600; color: var(--ink-2); }
 
   /* ---------- now + next ---------- */
   .duo { margin-top: clamp(96px, 14vh, 160px); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; text-align: left; }
@@ -135,8 +117,6 @@
   .card .kicker .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(52, 199, 89, .25); }
   .card h3 { margin-top: 20px; font-family: var(--display); font-weight: 600; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.1; letter-spacing: -.03em; text-wrap: balance; }
   .card p { margin-top: 12px; font-size: 17px; line-height: 1.5; color: var(--ink-3); }
-  .card ul { margin-top: 18px; padding: 0; list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
-  .card li { height: 34px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 999px; background: var(--bg); font-size: 14px; font-weight: 500; color: var(--ink-2); }
   .card .links { margin-top: auto; padding-top: 24px; display: flex; flex-wrap: wrap; gap: 8px; }
   .card .links a { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; background: var(--bg); font-size: 15px; font-weight: 500; }
   .card .links a:hover { background: #E8E8ED; }
@@ -144,24 +124,20 @@
   /* ---------- book ---------- */
   .book-sec { margin-top: clamp(96px, 14vh, 160px); }
   .book-sec .lede { margin-left: auto; margin-right: auto; }
-  .scheduler { margin-top: clamp(32px, 5vh, 56px); background: var(--surface); border-radius: 32px; overflow: hidden; box-shadow: 0 2px 6px rgba(0, 0, 0, .06), 0 30px 60px -24px rgba(0, 0, 0, .22); }
-  .calendly-inline-widget { min-width: 320px; height: 720px; }
-  .fallback { padding: 18px 24px 22px; border-top: 1px solid var(--line); font-size: 15px; color: var(--ink-3); }
+  .book-sec .actions { margin-top: 32px; }
 
   /* island with a single action */
   .island .me { padding-right: 14px; }
 
   @media (max-width: 560px) {
     .player { border-radius: 20px; }
-    .scheduler { border-radius: 24px; margin-left: calc(var(--gutter) * -0.5); margin-right: calc(var(--gutter) * -0.5); width: auto; }
-    .calendly-inline-widget { height: 1000px; }
     .island .me span { display: inline; }
   }
   @media (max-width: 360px) { .island .me span { display: none; } }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    .player, .work img { transition: none; }
-    .player:hover, .work figure:hover img { transform: none; }
+    .player { transition: none; }
+    .player:hover { transform: none; }
   }
 </style>
 </head>
@@ -176,9 +152,48 @@
   </nav>
 
   <section class="intro" id="intro" aria-label="Intro: Hi, I am Tom. I design products and the visuals that sell them, and document it all on my socials.">
-    <video id="introVideo" muted loop playsinline preload="none" aria-hidden="true" data-src="/assets/tom-intro-v1.mp4"></video>
+    <div class="reel wide" aria-hidden="true">
+      <div class="scene" data-s="0">
+        <div class="out" style="position:absolute;inset:0;animation-delay:1950ms">
+          <p class="hl" style="left:0;right:0;top:352px;font-size:104px"><span class="w" style="animation-delay:0ms">Hi,</span> <span class="w" style="animation-delay:130ms">I</span> <span class="w" style="animation-delay:260ms">am</span> <span class="w" style="animation-delay:390ms">Tom</span></p>
+        </div>
+      </div>
+      <div class="scene" data-s="1" hidden>
+        <div class="anchor">
+            <img class="me drop" src="/assets/intro-dancers.png" alt="" style="--r:0deg;left:138px;top:-193px;width:133px;height:156px;animation-delay:720ms">
+            <img class="me drop" src="/assets/intro-tom.png" alt="" style="--r:0deg;left:-167px;top:-320px;width:405px;height:640px;animation-delay:100ms">
+            <img class="me pop" src="/assets/intro-osmo.png" alt="" style="--r:0deg;left:-269px;top:-116px;width:130px;height:325px;animation-delay:520ms">
+        </div>
+      </div>
+      <div class="scene" data-s="2" hidden>
+        <div class="out" style="position:absolute;inset:0;animation-delay:3150ms">
+          <div class="anchor down" style="--dy:285px;--ds:.34">
+              <img class="me" src="/assets/intro-dancers.png" alt="" style="--r:0deg;left:138px;top:-193px;width:133px;height:156px">
+              <img class="me" src="/assets/intro-tom.png" alt="" style="--r:0deg;left:-167px;top:-320px;width:405px;height:640px">
+              <img class="me" src="/assets/intro-osmo.png" alt="" style="--r:0deg;left:-269px;top:-116px;width:130px;height:325px">
+          </div>
+          <p class="hl" style="left:160px;right:160px;top:240px;font-size:88px"><span class="ul2"><span class="w" style="animation-delay:450ms">I</span> <span class="w" style="animation-delay:530ms">design</span> <span class="w" style="animation-delay:610ms">products</span></span> <span class="w" style="animation-delay:690ms">and</span> <span class="w" style="animation-delay:770ms">the</span> <span class="w" style="animation-delay:850ms">visuals</span> <span class="w" style="animation-delay:930ms">that</span> <span class="w hot" style="animation-delay:1010ms">sell</span> <span class="w hot" style="animation-delay:1090ms">them.</span></p>
+        </div>
+      </div>
+      <div class="scene" data-s="3" hidden>
+        <div class="out" style="position:absolute;inset:0;animation-delay:1250ms">
+          <div class="anchor">
+              <img class="me pop" src="/assets/intro-essense.png" alt="" style="--r:-8deg;left:-620px;top:-230px;width:200px;height:261px;animation-delay:0ms">
+              <img class="me pop" src="/assets/intro-glasses.png" alt="" style="--r:4deg;left:-230px;top:-260px;width:440px;height:135px;animation-delay:240ms">
+              <img class="me pop" src="/assets/intro-watch.png" alt="" style="--r:8deg;left:425px;top:-235px;width:115px;height:312px;animation-delay:480ms">
+              <img class="me pop" src="/assets/intro-bracelet.png" alt="" style="--r:6deg;left:40px;top:-10px;width:430px;height:149px;animation-delay:360ms">
+              <img class="me pop" src="/assets/intro-camera.png" alt="" style="--r:-5deg;left:-400px;top:-60px;width:400px;height:213px;animation-delay:120ms">
+          </div>
+        </div>
+      </div>
+      <div class="scene" data-s="4" hidden>
+        <div class="out" style="position:absolute;inset:0;animation-delay:4150ms">
+          <p class="hl" style="left:0;right:0;top:315px;font-size:88px"><span class="w" style="animation-delay:150ms">And</span> <span class="ul2" style="animation-delay:850ms"><span class="w" style="animation-delay:240ms">document</span> <span class="w" style="animation-delay:330ms">it</span> <span class="w" style="animation-delay:420ms">all</span></span><br><span class="w" style="animation-delay:510ms">on</span> <span class="w" style="animation-delay:600ms">my</span> <span class="w" style="animation-delay:690ms">socials</span></p>
+        </div>
+      </div>
+    </div>
 
-    <div class="reel" id="reel" aria-hidden="true">
+    <div class="reel tall" aria-hidden="true">
       <div class="scene" data-s="0">
         <div class="out" style="position:absolute;inset:0;animation-delay:1950ms">
           <p class="hl" style="top:372px;font-size:68px"><span class="w">Hi,</span> <span class="w" style="animation-delay:130ms">I</span> <span class="w" style="animation-delay:260ms">am</span> <span class="w" style="animation-delay:390ms">Tom</span></p>
@@ -202,6 +217,7 @@
         </div>
       </div>
       <div class="scene" data-s="3" hidden>
+        <div class="out" style="position:absolute;inset:0;animation-delay:1250ms">
         <div class="anchor">
           <img class="me pop" src="/assets/intro-glasses.png" alt="" style="--r:4deg;left:-120px;top:-330px;width:240px;height:73px;animation-delay:240ms">
           <img class="me pop" src="/assets/intro-essense.png" alt="" style="--r:-8deg;left:-175px;top:-220px;width:140px;height:183px">
@@ -209,22 +225,16 @@
           <img class="me pop" src="/assets/intro-camera.png" alt="" style="--r:-5deg;left:-165px;top:0;width:250px;height:132px;animation-delay:120ms">
           <img class="me pop" src="/assets/intro-bracelet.png" alt="" style="--r:6deg;left:-60px;top:170px;width:240px;height:83px;animation-delay:360ms">
         </div>
+        </div>
       </div>
       <div class="scene" data-s="4" hidden>
         <div class="out" style="position:absolute;inset:0;animation-delay:4150ms">
-          <div class="anchor down" style="--dy:195px;--ds:.42">
-            <img class="me" src="/assets/intro-glasses.png" alt="" style="--r:4deg;left:-120px;top:-330px;width:240px;height:73px">
-            <img class="me" src="/assets/intro-essense.png" alt="" style="--r:-8deg;left:-175px;top:-220px;width:140px;height:183px">
-            <img class="me" src="/assets/intro-watch.png" alt="" style="--r:8deg;left:60px;top:-235px;width:80px;height:217px">
-            <img class="me" src="/assets/intro-camera.png" alt="" style="--r:-5deg;left:-165px;top:0;width:250px;height:132px">
-            <img class="me" src="/assets/intro-bracelet.png" alt="" style="--r:6deg;left:-60px;top:170px;width:240px;height:83px">
-          </div>
-          <p class="hl" style="top:170px;font-size:52px"><span class="w" style="animation-delay:450ms">And</span> <span class="ul2"><span class="w" style="animation-delay:540ms">document</span> <span class="w" style="animation-delay:630ms">it</span> <span class="w" style="animation-delay:720ms">all</span></span><br><span class="w" style="animation-delay:810ms">on</span> <span class="w" style="animation-delay:900ms">my</span> <span class="w" style="animation-delay:990ms">socials</span></p>
+          <p class="hl" style="top:342px;font-size:52px"><span class="w" style="animation-delay:150ms">And</span> <span class="ul2" style="animation-delay:850ms"><span class="w" style="animation-delay:240ms">document</span> <span class="w" style="animation-delay:330ms">it</span> <span class="w" style="animation-delay:420ms">all</span></span><br><span class="w" style="animation-delay:510ms">on</span> <span class="w" style="animation-delay:600ms">my</span> <span class="w" style="animation-delay:690ms">socials</span></p>
         </div>
       </div>
     </div>
 
-    <a class="cue press" href="#top">Scroll <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+    <a class="cue press" href="#top">Discover more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
   </section>
 
   <main id="top">
@@ -234,7 +244,6 @@
     <p class="lede">Industrial designer who grew up in ecom. I make <strong>renders, ad creatives and brand visuals</strong> for ecom brands that want their hero product to look like the best on the market.</p>
     <div class="actions">
       <a class="btn primary press" href="#book">Book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      <a class="btn press" href="#work">See the work</a>
     </div>
 
     <a class="player" href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener" aria-label="Watch my journey on YouTube">
@@ -244,30 +253,18 @@
       <span class="cap-row"><span class="cap glass">Watch the process on YouTube</span></span>
     </a>
 
-    <!-- 2. Proof -->
-    <section class="work-sec" id="work" aria-labelledby="work-title">
-      <p class="eyebrow">Selected work</p>
-      <h2 id="work-title">Products, <span>and the visuals that sell them.</span></h2>
-      <div class="work">
-        <figure><div class="shot"><img src="/assets/work/essense.jpg" alt="A brown Essense supplement pouch on a clean studio background" loading="lazy"></div><figcaption><span class="tag">Client</span><b>Essense</b>Branding and packaging</figcaption></figure>
-        <figure><div class="shot"><img src="/assets/work/milestone.jpg" alt="A blue Milestone watch on a wrist, next to its launch poster" loading="lazy"></div><figcaption><span class="tag">Own brand</span><b>Milestone</b>Product design, branding and launch visuals</figcaption></figure>
-        <figure><div class="shot"><img src="/assets/work/dji-halo.jpg" alt="Close-up render of a black DJI camera concept, Made for B-roll" loading="lazy"></div><figcaption><span class="tag">Concept</span><b>DJI · Halo</b>Product design and renders</figcaption></figure>
-      </div>
-    </section>
-
     <!-- 3. Now + 4. The door -->
     <section class="duo" aria-label="What I do">
       <div class="card">
         <span class="kicker"><span class="dot"></span>Taking projects now</span>
         <h3>Freelance visuals for ecom brands already selling.</h3>
-        <p>You have a product and ads running. I make it look like the brand it should be.</p>
-        <ul><li>3D product renders</li><li>Ad creatives</li><li>Packaging</li><li>Brand visuals</li></ul>
+        <p>I’m finishing my industrial design studies while freelancing on creative services for ecom brands.</p>
         <div class="links"><a class="press" href="#book">Book a call</a></div>
       </div>
       <div class="card">
         <span class="kicker">2027</span>
         <h3>Building a design studio for ecom brands and designers.</h3>
-        <p>From dropshipped product to a brand’s own designed product. I’m documenting the whole build.</p>
+        <p>Helping brands go from a dropshipped product to their own designed product. I’m documenting the whole build.</p>
         <div class="links">
           <a class="press" href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener">YouTube</a>
           <a class="press" href="https://tombobet.substack.com" target="_blank" rel="noopener">Substack</a>
@@ -278,12 +275,11 @@
 
     <!-- 5. Call to action -->
     <section class="book-sec" id="book" aria-labelledby="book-title">
-      <p class="eyebrow">Book a call</p>
+      <p class="eyebrow">Let’s talk</p>
       <h2 id="book-title">Let’s look at your brand.</h2>
-      <p class="lede">A short call. I’ll tell you what I’d change, even if we don’t work together.</p>
-      <div class="scheduler">
-        <div class="calendly-inline-widget" data-url="https://calendly.com/tombobet/design-and-ecom?hide_gdpr_banner=1&amp;primary_color=1d1d1f"></div>
-        <p class="fallback">Calendar not loading? <a class="quiet" href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Open it on Calendly</a> or <a class="quiet" href="mailto:tombobetdesign@gmail.com">write to me</a>.</p>
+      <p class="lede">Send me a message on Instagram. I’ll tell you what I’d change, even if we don’t work together.</p>
+      <div class="actions">
+        <a class="btn primary press" href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Let’s talk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </section>
   </main>
@@ -326,40 +322,34 @@
     tick(); setInterval(tick, 15000);
   })();
 
-  // Intro: wide screens loop the MP4, tall screens loop the same animation built for portrait.
+  // Intro: one live animation, laid out wide (1440 x 810) or tall (390 x 844) to fit the screen, on a loop.
   (function () {
-    var intro = document.getElementById("intro"), video = document.getElementById("introVideo"), reel = document.getElementById("reel");
+    var intro = document.getElementById("intro");
     var portrait = window.matchMedia("(max-aspect-ratio: 1/1)");
     var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var scenes = reel.querySelectorAll(".scene"), durations = [2450, 1900, 3650, 1700, 4650, 700];
-    var timer = null, scene = 0, visible = true;
+    var durations = [2450, 1900, 3650, 1700, 4650, 700];
+    var timer = null, scene = 0, visible = true, reel = null;
 
-    function fit() { reel.style.setProperty("--k", Math.min(intro.clientWidth / 390, intro.clientHeight / 844)); }
-    function show(i) { scene = i; scenes.forEach(function (el, n) { el.hidden = n !== i; }); }
-    function step() {
-      timer = setTimeout(function () { show((scene + 1) % durations.length); step(); }, durations[scene]);
+    function active() { return intro.querySelector(portrait.matches ? ".reel.tall" : ".reel.wide"); }
+    function fit() {
+      var w = intro.clientWidth, h = intro.clientHeight;
+      document.querySelectorAll(".reel.tall").forEach(function (r) { r.style.setProperty("--k", Math.min(w / 390, h / 844)); });
+      // desktop: the stage sits smaller in the middle of the screen
+      var wide = Math.min(w * .64, h * 1.08, 1100);
+      document.querySelectorAll(".reel.wide").forEach(function (r) { r.style.setProperty("--k", wide / 1440); });
     }
-    function stopReel() { clearTimeout(timer); timer = null; }
-    function startReel() { stopReel(); if (still) { show(2); return; } show(0); step(); }
+    function show(i) { scene = i; reel.querySelectorAll(".scene").forEach(function (el) { el.hidden = +el.dataset.s !== i; }); }
+    function step() { timer = setTimeout(function () { show((scene + 1) % durations.length); step(); }, durations[scene]); }
+    function stop() { clearTimeout(timer); timer = null; }
+    function start() { stop(); reel = active(); if (still) { show(2); return; } show(0); step(); }
 
-    function run() {
-      if (portrait.matches) {
-        video.pause(); fit();
-        if (visible && !timer) startReel();
-      } else {
-        stopReel();
-        if (!video.src) video.src = video.dataset.src;
-        if (still) { video.currentTime = 6; return; }
-        if (visible) { var p = video.play(); if (p && p.catch) p.catch(function () {}); } else video.pause();
-      }
-    }
     new IntersectionObserver(function (e) {
       visible = e[0].isIntersecting;
-      if (!visible) { stopReel(); video.pause(); } else run();
+      if (visible) start(); else stop();
     }).observe(intro);
-    portrait.addEventListener("change", run);
+    portrait.addEventListener("change", function () { fit(); if (visible) start(); });
     window.addEventListener("resize", fit);
-    run();
+    fit();
   })();
 
   // The video always plays muted on loop.
@@ -369,6 +359,5 @@
     if (p && p.catch) p.catch(function () { document.addEventListener("pointerdown", function () { v.play(); }, { once: true }); });
   })();
 </script>
-<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 </body>
 </html>
