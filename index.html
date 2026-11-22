@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Tom Bobet · Product visuals for ecom brands</title>
+<title>Tom Bobet · Design is the moat</title>
 <meta name="description" content="Tom Bobet. Industrial designer who grew up in ecom. I design hero products, and the visuals that sell them.">
 <meta property="og:title" content="Tom Bobet">
 <meta property="og:description" content="Industrial designer who grew up in ecom. I design hero products, and the visuals that sell them.">
@@ -28,17 +28,35 @@
   ]
 }
 </script>
+<script>
+  // The intro plays on the first page view of a visit, then the landing page shows directly.
+  try { if (!sessionStorage.getItem("introSeen") && !matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("intro-on"); } catch (e) {}
+</script>
+<link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css">
 <link rel="stylesheet" href="/assets/site.css">
 <style>
-  html { scroll-behavior: smooth; }
-  main { width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; padding-top: clamp(96px, 12vh, 140px); scroll-margin-top: 0; }
+  html { scroll-behavior: smooth; overscroll-behavior-x: none; }
+  body { background: #FFFFFF; overflow-x: clip; overscroll-behavior-x: none; }
+  .page { padding: 0; }
+  main { width: 100%; transition: opacity 900ms cubic-bezier(.2, .8, .2, 1), transform 900ms cubic-bezier(.2, .8, .2, 1); }
+  .intro-on main { opacity: 0; transform: translateY(24px); }
+  html.intro-on { overflow: hidden; }
+  :root { --blue: #1D6BEB; --mist: #EBEBEB; --navy: #0D1F3C; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .wrap { width: 100%; max-width: 1440px; margin: 0 auto; }
+  .island { margin-top: 16px; }
+  /* same island as the live site: name stays visible on phones */
+  .island .me { padding-right: 14px; }
+  @media (max-width: 560px) { .island .me span { display: inline; } }
+  @media (max-width: 360px) { .island .me span { display: none; } }
 
-  /* ---------- intro: full-screen loop, the island floats over it ---------- */
+  /* ---------- intro: plays once per visit over the page, the island stays on top ---------- */
   .intro {
-    position: relative; overflow: hidden; z-index: 1;
-    width: 100vw; max-width: none; height: 100vh; height: 100svh;
-    margin: -72px calc(50% - 50vw) 0; background: #F4F4F4;
+    display: none; position: fixed; inset: 0; z-index: 15; overflow: hidden; max-width: none;
+    background: #F4F4F4; transition: opacity 800ms cubic-bezier(.4, 0, .2, 1), filter 800ms ease;
   }
+  .intro-on .intro { display: block; }
+  .intro.leaving { opacity: 0; filter: blur(6px); pointer-events: none; }
   .intro .cue {
     position: absolute; left: 50%; bottom: max(24px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 3;
     display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 999px;
@@ -62,7 +80,7 @@
   .reel .hl { position: absolute; left: 20px; right: 20px; margin: 0; text-align: center; font-weight: 700; letter-spacing: -.035em; line-height: 1.02; text-wrap: balance; }
   .reel .w { display: inline-block; animation: wIn 760ms cubic-bezier(.2, .75, .2, 1) both; }
   @keyframes wIn { 0% { opacity: 0; filter: blur(12px); transform: translateY(.28em); color: #BDBDBD; } 60% { color: #6B6B6B; } 100% { opacity: 1; filter: blur(0); transform: none; color: inherit; } }
-  .reel .ul2 { display: inline; position: relative; color: #8CCBFF; background: linear-gradient(#8CCBFF, #8CCBFF) left bottom / 0% .085em no-repeat; animation: ulGrow 620ms cubic-bezier(.3, .7, .2, 1) 1150ms forwards; }
+  .reel .ul2 { display: inline; position: relative; color: #1D6BEB; background: linear-gradient(#1D6BEB, #1D6BEB) left bottom / 0% .085em no-repeat; animation: ulGrow 620ms cubic-bezier(.3, .7, .2, 1) 1150ms forwards; }
   .reel .ul2 .w { animation-name: wInKeep; }
   @keyframes wInKeep { 0% { opacity: 0; filter: blur(12px); transform: translateY(.28em); } 100% { opacity: 1; filter: blur(0); transform: none; } }
   @keyframes ulGrow { to { background-size: 100% .085em; } }
@@ -77,100 +95,97 @@
   @keyframes pop { 0% { opacity: 0; transform: translateY(40px) rotate(calc(var(--r, 0deg) - 10deg)) scale(.4); } 100% { opacity: 1; transform: rotate(var(--r, 0deg)); } }
   .reel .down { animation: down 950ms cubic-bezier(.65, 0, .2, 1) both; }
   @keyframes down { to { transform: translateY(var(--dy)) scale(var(--ds)); } }
-  section { width: 100%; max-width: 980px; scroll-margin-top: 96px; }
-  .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: .02em; text-transform: uppercase; color: var(--ink-3); }
-  h2 { margin-top: 14px; font-family: var(--display); font-weight: 600; font-size: clamp(32px, 4vw, 52px); line-height: 1.05; letter-spacing: -.035em; text-wrap: balance; }
-  h2 span { font-weight: 400; color: var(--ink-4); }
-  .quiet { font-weight: 600; color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; text-decoration-color: rgba(29, 29, 31, .3); transition: text-decoration-color 200ms ease-out; }
-  .quiet:hover { text-decoration-color: var(--ink); }
 
-  /* ---------- hero ---------- */
-  .status {
-    display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 14px; border-radius: 999px;
-    background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
-    font-size: 13px; font-weight: 500; letter-spacing: .01em; color: var(--ink-3);
-  }
-  .status .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(52, 199, 89, .2); }
-  h1 {
-    margin-top: 28px; max-width: 11em; font-family: var(--display); font-weight: 600;
-    font-size: clamp(46px, 7vw, 104px); line-height: 1.02; letter-spacing: -.04em; text-wrap: balance;
-  }
-  h1 span { font-weight: 400; color: var(--ink-4); }
-  .lede { margin-top: 28px; max-width: 30em; font-size: 19px; line-height: 1.5; letter-spacing: -.01em; color: var(--ink-2); }
-  .lede strong { font-weight: 600; color: var(--ink); }
-  .actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 36px; }
-  .btn {
-    display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; border-radius: 999px;
-    background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 4px 12px rgba(0, 0, 0, .04);
-    font-size: 16px; font-weight: 500;
-  }
-  .btn:hover { box-shadow: 0 1px 2px rgba(0, 0, 0, .08), 0 8px 20px rgba(0, 0, 0, .08); }
-  .btn.primary { background: var(--ink); color: #FFFFFF; font-weight: 600; }
-  .btn.primary:hover { background: #000000; }
-  .btn svg { width: 16px; height: 16px; flex: none; transition: transform 300ms cubic-bezier(.2, .8, .2, 1); }
-  .btn.primary:hover svg { transform: translateX(4px); }
+  /* ---------- 1. hero: design is the moat ---------- */
+  .hero { margin-top: -72px; background: var(--blue); padding: 72px 0 0; }
+  .hero img { display: block; width: 100%; max-width: 1440px; height: auto; margin: 0 auto; aspect-ratio: 2500 / 1080; }
 
-  /* ---------- video ---------- */
-  .player {
-    position: relative; display: block; width: 100%; max-width: 980px;
-    margin-top: clamp(56px, 9vh, 96px); aspect-ratio: 16 / 9;
-    border-radius: 28px; overflow: hidden; background: #E8E8ED;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, .06), 0 30px 60px -20px rgba(0, 0, 0, .28);
-    transition: transform 400ms cubic-bezier(.2, .8, .2, 1);
+  /* ---------- 2. spots ticker ---------- */
+  .ticker { overflow: hidden; background: #F2F2F2; border-block: 1px solid rgba(13, 31, 60, .06); }
+  .ticker .track { display: flex; width: max-content; animation: tick 40s linear infinite; }
+  .ticker span { flex: none; padding: 12px 32px 12px 16px; font-size: 14px; font-weight: 500; letter-spacing: -.01em; color: var(--navy); white-space: nowrap; }
+  .ticker b { font-weight: 700; }
+  @keyframes tick { to { transform: translateX(-50%); } }
+
+  /* ---------- 3. three reasons ---------- */
+  .reasons { background: var(--blue); color: var(--mist); text-align: center; padding: clamp(56px, 8vw, 96px) 24px clamp(64px, 9vw, 112px); }
+  .reasons .logo { width: 72px; height: auto; margin: 0 auto; }
+  .reasons h2 { margin: 24px auto 0; max-width: 12em; font-family: var(--display); font-weight: 600; font-size: clamp(32px, 3.6vw, 48px); line-height: 1.05; letter-spacing: -.045em; text-wrap: balance; }
+  .reasons ol { list-style: none; padding: 0; margin: clamp(64px, 9vw, 120px) auto 0; max-width: 1180px; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(28px, 4vw, 64px); text-align: left; counter-reset: r; }
+  .reasons li { counter-increment: r; }
+  .reasons li::before { content: "0" counter(r); display: block; margin-bottom: 14px; font-size: 13px; font-weight: 600; letter-spacing: .04em; color: rgba(235, 235, 235, .6); }
+  .reasons h3 { margin: 0; font-family: var(--display); font-size: clamp(20px, 1.8vw, 24px); font-weight: 600; line-height: 1.15; letter-spacing: -.03em; color: #FFFFFF; }
+  .reasons li p { margin-top: 12px; font-size: 16px; line-height: 1.5; letter-spacing: -.01em; color: rgba(235, 235, 235, .82); }
+  .reasons li .fix { display: block; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, .22); color: #FFFFFF; font-weight: 500; }
+  .reasons .relax { margin-top: clamp(80px, 12vw, 160px); font-family: var(--display); font-weight: 600; font-size: clamp(30px, 3.2vw, 44px); letter-spacing: -.05em; }
+  .talk { background: #F5F5F7; color: var(--ink); text-align: center; padding: clamp(48px, 6vw, 72px) 24px; }
+  .talk .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+  .talk h2 { margin-top: 14px; font-family: var(--display); font-weight: 600; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -.035em; }
+  .talk p { margin: 18px auto 0; max-width: 31em; font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+  .talk .btn { margin-top: 28px; display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 20px; border-radius: 999px; background: #000000; color: #FFFFFF; font-size: 14px; font-weight: 600; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .4); }
+  .talk .btn svg { width: 14px; height: 14px; transition: transform 300ms cubic-bezier(.2, .8, .2, 1); }
+  .talk .btn:hover svg { transform: translateX(3px); }
+  .reasons .talk { max-width: 720px; margin: clamp(56px, 8vw, 96px) auto 0; border-radius: clamp(28px, 3vw, 40px); padding: clamp(36px, 4.5vw, 52px) 28px; }
+  .reasons .talk p { margin-top: 12px; }
+  .reasons .talk .btn { margin-top: 22px; }
+
+  /* ---------- 4. work strip ---------- */
+  .work { background: #FFFFFF; padding: clamp(40px, 5vw, 72px) 0; overflow: hidden; }
+  .work ul { list-style: none; margin: 0; padding: 0; display: flex; width: max-content; animation: slide 60s linear infinite; }
+  .work:hover ul { animation-play-state: paused; }
+  .work li { flex: none; width: clamp(220px, 21vw, 320px); margin-right: clamp(14px, 1.6vw, 24px); }
+  @keyframes slide { to { transform: translateX(-50%); } }
+  .work li img { width: 100%; height: auto; aspect-ratio: 601 / 900; border-radius: 4px; }
+
+  /* ---------- 5. let's talk ---------- */
+  .talk.solo { padding: clamp(56px, 7vw, 96px) 24px; }
+
+  /* ---------- 6. closing card: stickers + footer ---------- */
+  .closing { background: #F5F5F7; padding: 0 16px clamp(32px, 4vw, 56px); }
+  .frame { max-width: 1240px; margin: 0 auto; padding: 12px; border-radius: 44px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(0, 0, 0, .05), 0 30px 70px -34px rgba(0, 0, 0, .3); }
+  .card { position: relative; overflow: hidden; border-radius: 34px; background: var(--blue); color: #FFFFFF; padding: clamp(28px, 4vw, 52px) clamp(24px, 4vw, 52px) 0; }
+  .card-top { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px; }
+  .card .pitch { max-width: 17em; font-family: var(--display); font-size: clamp(22px, 2.3vw, 30px); font-weight: 600; line-height: 1.12; letter-spacing: -.03em; }
+  .card .pitch span { font-weight: 400; color: rgba(255, 255, 255, .62); }
+  .card .cols { display: flex; gap: clamp(32px, 5vw, 72px); }
+  .card .col { display: flex; flex-direction: column; gap: 9px; font-size: 15px; }
+  .card .col b { margin-bottom: 4px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255, 255, 255, .55); }
+  .card .col a { color: rgba(255, 255, 255, .88); transition: color 200ms ease-out; }
+  .card .col a:hover { color: #FFFFFF; }
+  .stage { position: relative; height: clamp(320px, 34vw, 470px); margin-top: clamp(8px, 2vw, 24px); }
+  .stage .word { position: absolute; z-index: 0; left: 50%; bottom: -.14em; transform: translateX(-50%); font-family: var(--display); font-weight: 700; font-size: clamp(76px, 16.5vw, 228px); line-height: 1; letter-spacing: -.055em; white-space: nowrap; background: linear-gradient(to bottom, rgba(255, 255, 255, .95), rgba(255, 255, 255, .18)); -webkit-background-clip: text; background-clip: text; color: transparent; pointer-events: none; }
+  .stickers { position: absolute; z-index: 1; left: 50%; bottom: 0; height: 100%; aspect-ratio: 443 / 482; transform: translateX(-46%); }
+  .stickers img { position: absolute; max-width: none; height: auto; filter: drop-shadow(0 18px 26px rgba(0, 0, 0, .25)); }
+  .stickers .tom { left: 27%; top: 0; width: 63%; }
+  .stickers .osmo { left: 0; top: 34%; width: 25%; }
+  .stickers .dancers { left: 74.5%; top: 20%; width: 25.5%; }
+  .card-base { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 0 calc(clamp(24px, 4vw, 52px) * -1); padding: 16px clamp(24px, 4vw, 52px) 18px; border-top: 1px solid rgba(255, 255, 255, .2); background: rgba(29, 107, 235, .72); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: rgba(255, 255, 255, .75); }
+  .card-base .live { display: inline-flex; align-items: center; gap: 8px; }
+  .card-base .live i { width: 7px; height: 7px; border-radius: 50%; background: #34C759; box-shadow: 0 0 0 3px rgba(52, 199, 89, .3); }
+
+  @media (max-width: 760px) {
+    .frame { border-radius: 30px; padding: 6px; }
+    .card { border-radius: 25px; }
+    .card .cols { width: 100%; justify-content: flex-start; }
+    .stage { height: 270px; }
+    .stage .word { font-size: 84px; bottom: -.08em; }
+    .stickers { transform: translateX(-48%); }
+    .reasons ol { grid-template-columns: 1fr; gap: 40px; margin-top: 56px; }
   }
-  .player:hover { transform: translateY(-4px); }
-  .player img, .player video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-  .player video { pointer-events: none; }
-  .player .shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0, 0, 0, .35), transparent 45%); }
-  .player .cap-row { position: absolute; left: 0; right: 0; bottom: 20px; display: flex; justify-content: center; padding: 0 16px; }
-  .player .cap {
-    display: inline-flex; align-items: center; min-height: 36px; padding: 0 16px; border-radius: 999px;
-    background: rgba(0, 0, 0, .38); border: 1px solid rgba(255, 255, 255, .18); color: #FFFFFF; font-size: 14px;
-  }
-
-
-  /* ---------- now + next ---------- */
-  .duo { margin-top: clamp(96px, 14vh, 160px); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; text-align: left; }
-  .card { display: flex; flex-direction: column; align-items: flex-start; padding: clamp(28px, 4vw, 44px); border-radius: 32px; background: var(--surface); box-shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 20px 50px -24px rgba(0, 0, 0, .18); }
-  .card .kicker { display: inline-flex; align-items: center; gap: 8px; height: 30px; padding: 0 12px; border-radius: 999px; background: var(--bg); font-size: 13px; font-weight: 600; color: var(--ink-2); }
-  .card .kicker .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px rgba(52, 199, 89, .25); }
-  .card h3 { margin-top: 20px; font-family: var(--display); font-weight: 600; font-size: clamp(26px, 2.6vw, 34px); line-height: 1.1; letter-spacing: -.03em; text-wrap: balance; }
-  .card p { margin-top: 12px; font-size: 17px; line-height: 1.5; color: var(--ink-3); }
-  .card .links { margin-top: auto; padding-top: 24px; display: flex; flex-wrap: wrap; gap: 8px; }
-  .card .links a { display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 999px; background: var(--bg); font-size: 15px; font-weight: 500; }
-  .card .links a:hover { background: #E8E8ED; }
-
-  /* ---------- book ---------- */
-  .book-sec { margin-top: clamp(96px, 14vh, 160px); }
-  .book-sec .lede { margin-left: auto; margin-right: auto; }
-  .book-sec .actions { margin-top: 32px; }
-
-  /* island with a single action */
-  .island .me { padding-right: 14px; }
-
-  @media (max-width: 560px) {
-    .player { border-radius: 20px; }
-    .island .me span { display: inline; }
-  }
-  @media (max-width: 360px) { .island .me span { display: none; } }
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .player { transition: none; }
-    .player:hover { transform: none; }
-  }
+  @media (prefers-reduced-motion: reduce) { .ticker .track, .work ul { animation: none; } .work { overflow-x: auto; } }
 </style>
 </head>
 <body>
 <div class="page">
 
   <nav class="island" aria-label="Main">
-    <a class="me press" href="#intro"><img src="/assets/avatar.jpg" alt=""><span>Tom Bobet</span></a>
+    <a class="me press" href="#top"><img src="/assets/avatar.jpg" alt=""><span>Tom Bobet</span></a>
     <div class="links">
-      <a class="press book" href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a class="press book" data-calendly href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
   </nav>
 
-  <section class="intro" id="intro" aria-label="Intro: Hi, I am Tom. I design products and the visuals that sell them, and document it all on my socials.">
+  <section class="intro" id="intro" aria-label="Intro: Hi, I am Tom. I design products and the visuals that sell them.">
     <div class="reel wide" aria-hidden="true">
       <div class="scene" data-s="0">
         <div class="out" style="position:absolute;inset:0;animation-delay:1950ms">
@@ -185,29 +200,13 @@
         </div>
       </div>
       <div class="scene" data-s="2" hidden>
-        <div class="out" style="position:absolute;inset:0;animation-delay:3150ms">
+        <div style="position:absolute;inset:0">
           <div class="anchor down" style="--dy:285px;--ds:.34">
               <img class="me" src="/assets/intro-dancers.png" alt="" style="--r:0deg;left:138px;top:-193px;width:133px;height:156px">
               <img class="me" src="/assets/intro-tom.png" alt="" style="--r:0deg;left:-167px;top:-320px;width:405px;height:640px">
               <img class="me" src="/assets/intro-osmo.png" alt="" style="--r:0deg;left:-269px;top:-116px;width:130px;height:325px">
           </div>
           <p class="hl" style="left:160px;right:160px;top:240px;font-size:88px"><span class="ul2"><span class="w" style="animation-delay:450ms">I</span> <span class="w" style="animation-delay:530ms">design</span> <span class="w" style="animation-delay:610ms">products</span></span> <span class="w" style="animation-delay:690ms">and</span> <span class="w" style="animation-delay:770ms">the</span> <span class="w" style="animation-delay:850ms">visuals</span> <span class="w" style="animation-delay:930ms">that</span> <span class="w hot" style="animation-delay:1010ms">sell</span> <span class="w hot" style="animation-delay:1090ms">them.</span></p>
-        </div>
-      </div>
-      <div class="scene" data-s="3" hidden>
-        <div class="out" style="position:absolute;inset:0;animation-delay:1250ms">
-          <div class="anchor">
-              <img class="me pop" src="/assets/intro-essense.png" alt="" style="--r:-8deg;left:-620px;top:-230px;width:200px;height:261px;animation-delay:0ms">
-              <img class="me pop" src="/assets/intro-glasses.png" alt="" style="--r:4deg;left:-230px;top:-260px;width:440px;height:135px;animation-delay:240ms">
-              <img class="me pop" src="/assets/intro-watch.png" alt="" style="--r:8deg;left:425px;top:-235px;width:115px;height:312px;animation-delay:480ms">
-              <img class="me pop" src="/assets/intro-bracelet.png" alt="" style="--r:6deg;left:40px;top:-10px;width:430px;height:149px;animation-delay:360ms">
-              <img class="me pop" src="/assets/intro-camera.png" alt="" style="--r:-5deg;left:-400px;top:-60px;width:400px;height:213px;animation-delay:120ms">
-          </div>
-        </div>
-      </div>
-      <div class="scene" data-s="4" hidden>
-        <div class="out" style="position:absolute;inset:0;animation-delay:4150ms">
-          <p class="hl" style="left:0;right:0;top:315px;font-size:88px"><span class="w" style="animation-delay:150ms">And</span> <span class="ul2" style="animation-delay:850ms"><span class="w" style="animation-delay:240ms">document</span> <span class="w" style="animation-delay:330ms">it</span> <span class="w" style="animation-delay:420ms">all</span></span><br><span class="w" style="animation-delay:510ms">on</span> <span class="w" style="animation-delay:600ms">my</span> <span class="w" style="animation-delay:690ms">socials</span></p>
         </div>
       </div>
     </div>
@@ -226,7 +225,7 @@
         </div>
       </div>
       <div class="scene" data-s="2" hidden>
-        <div class="out" style="position:absolute;inset:0;animation-delay:3150ms">
+        <div style="position:absolute;inset:0">
           <div class="anchor down" style="--dy:205px;--ds:.5">
             <img class="me" src="/assets/intro-dancers.png" alt="" style="left:86px;top:-120px;width:82px;height:97px">
             <img class="me" src="/assets/intro-tom.png" alt="" style="left:-104px;top:-198px;width:251px;height:397px">
@@ -235,148 +234,152 @@
           <p class="hl" style="top:150px;font-size:48px"><span class="ul2"><span class="w" style="animation-delay:450ms">I</span> <span class="w" style="animation-delay:530ms">design</span> <span class="w" style="animation-delay:610ms">products</span></span> <span class="w" style="animation-delay:690ms">and</span> <span class="w" style="animation-delay:770ms">the</span> <span class="w" style="animation-delay:850ms">visuals</span> <span class="w" style="animation-delay:930ms">that</span> <span class="w hot" style="animation-delay:1010ms">sell</span> <span class="w hot" style="animation-delay:1090ms">them.</span></p>
         </div>
       </div>
-      <div class="scene" data-s="3" hidden>
-        <div class="out" style="position:absolute;inset:0;animation-delay:1250ms">
-        <div class="anchor">
-          <img class="me pop" src="/assets/intro-glasses.png" alt="" style="--r:4deg;left:-120px;top:-330px;width:240px;height:73px;animation-delay:240ms">
-          <img class="me pop" src="/assets/intro-essense.png" alt="" style="--r:-8deg;left:-175px;top:-220px;width:140px;height:183px">
-          <img class="me pop" src="/assets/intro-watch.png" alt="" style="--r:8deg;left:60px;top:-235px;width:80px;height:217px;animation-delay:480ms">
-          <img class="me pop" src="/assets/intro-camera.png" alt="" style="--r:-5deg;left:-165px;top:0;width:250px;height:132px;animation-delay:120ms">
-          <img class="me pop" src="/assets/intro-bracelet.png" alt="" style="--r:6deg;left:-60px;top:170px;width:240px;height:83px;animation-delay:360ms">
-        </div>
-        </div>
-      </div>
-      <div class="scene" data-s="4" hidden>
-        <div class="out" style="position:absolute;inset:0;animation-delay:4150ms">
-          <p class="hl" style="top:342px;font-size:52px"><span class="w" style="animation-delay:150ms">And</span> <span class="ul2" style="animation-delay:850ms"><span class="w" style="animation-delay:240ms">document</span> <span class="w" style="animation-delay:330ms">it</span> <span class="w" style="animation-delay:420ms">all</span></span><br><span class="w" style="animation-delay:510ms">on</span> <span class="w" style="animation-delay:600ms">my</span> <span class="w" style="animation-delay:690ms">socials</span></p>
-        </div>
-      </div>
     </div>
 
-    <a class="cue press" href="#top">Discover more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
+    <a class="cue press" href="#top" id="introSkip">Discover more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></a>
   </section>
 
   <main id="top">
     <!-- 1. Hero -->
-    <p class="status"><span class="dot"></span><span><time id="clock">20:00</time> in <span id="city">Paris</span> · <span id="offset">GMT+1</span></span></p>
-    <h1>I design products <span>and the visuals that sell them.</span></h1>
-    <p class="lede">Industrial designer who grew up in ecom. I make <strong>renders, ad creatives and brand visuals</strong> for ecom brands that want their hero product to look like the best on the market.</p>
-    <div class="actions">
-      <a class="btn primary press" href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    </div>
+    <section class="hero" aria-labelledby="hero-title">
+      <h1 class="sr" id="hero-title">Design is the moat. Build yours. Tom Bobet, creative director: outstanding design makes brands unforgettable.</h1>
+      <img src="/assets/lp-hero.jpg" alt="" width="2500" height="1080" fetchpriority="high">
+    </section>
 
-    <a class="player" href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener" aria-label="Watch my journey on YouTube">
-      <img src="/assets/videoaboutme-poster.jpg" alt="">
-      <video id="preview" autoplay muted loop playsinline preload="auto" poster="/assets/videoaboutme-poster.jpg" aria-hidden="true"><source src="/assets/videoaboutme-web.mp4" type="video/mp4"></video>
-      <span class="shade"></span>
-      <span class="cap-row"><span class="cap glass">Watch the process on YouTube</span></span>
-    </a>
+    <!-- 2. Open spots -->
+    <div class="ticker" aria-label="Open spots"><div class="track"><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span></div></div>
 
-    <!-- 3. Now + 4. The door -->
-    <section class="duo" aria-label="What I do">
-      <div class="card">
-        <span class="kicker"><span class="dot"></span>Taking projects now</span>
-        <h3>Freelance visuals for ecom brands already selling.</h3>
-        <p>I’m finishing my industrial design studies while freelancing on creative services for ecom brands.</p>
-        <div class="links"><a class="press" href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Book a call</a></div>
+    <!-- 3. Three reasons + let's talk -->
+    <section class="reasons" aria-labelledby="reasons-title">
+      <img class="logo" src="/assets/lp-logo-light.png" alt="Tom Bobet" width="700" height="329">
+      <h2 id="reasons-title">Three reasons your brand isn’t an asset yet.</h2>
+      <ol>
+        <li>
+          <h3>You sell a product you don’t own.</h3>
+          <p>The same item, from the same supplier, is in a hundred other stores. Anything anyone can source isn’t an asset.<span class="fix">→ The fix is a product that’s yours alone (product design).</span></p>
+        </li>
+        <li>
+          <h3>Customers buy the deal, not the brand.</h3>
+          <p>Without an identity, nobody remembers you or comes back, and you can’t charge more. You’re one cheaper copy away from losing them.<span class="fix">→ The fix is an identity people remember (brand).</span></p>
+        </li>
+        <li>
+          <h3>Your growth is rented.</h3>
+          <p>Every sale comes from paid attention. Stop the ads and the store stops. Nothing you make keeps working for you.<span class="fix">→ The fix is creative that builds recognition with every ad (the moat).</span></p>
+        </li>
+      </ol>
+      <p class="relax">relax, I got you</p>
+      <div class="talk">
+      <p class="eyebrow">For brands</p>
+      <h2>Let’s look at your brand.</h2>
+      <p>A short call. I’ll tell you what I’d change, even if we don’t work together.</p>
+      <a class="btn press" data-calendly href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
-      <div class="card">
-        <span class="kicker">2027</span>
-        <h3>Building a design studio for ecom brands and designers.</h3>
-        <p>Helping brands go from a dropshipped product to their own designed product. I’m documenting the whole build.</p>
-        <div class="links">
-          <a class="press" href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener">YouTube</a>
-          <a class="press" href="https://tombobet.substack.com" target="_blank" rel="noopener">Substack</a>
-          <a class="press" href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Instagram</a>
+    </section>
+
+    <!-- 4. Work -->
+    <section class="work" aria-label="Selected work">
+      <ul>
+        <li><img src="/assets/lp-work-1.jpg" alt="Lightitude, a lighting concept, product design, September 2025" loading="lazy" width="601" height="900"></li>
+        <li><img src="/assets/lp-work-2.jpg" alt="Crooked Alps collection, apparel" loading="lazy" width="601" height="900"></li>
+        <li><img src="/assets/lp-work-3.jpg" alt="Assise" loading="lazy" width="601" height="900"></li>
+        <li><img src="/assets/lp-work-4.jpg" alt="Milestone watch" loading="lazy" width="601" height="900"></li>
+        <li><img src="/assets/lp-work-5.jpg" alt="Cartier Chessmaster watch concept" loading="lazy" width="601" height="900"></li>
+        <li><img src="/assets/lp-work-6.jpg" alt="Nude Project x Porsche T-shirt" loading="lazy" width="601" height="900"></li>
+        <li><img src="/assets/lp-work-7.jpg" alt="Assise" loading="lazy" width="601" height="900"></li>
+        <li aria-hidden="true"><img src="/assets/lp-work-1.jpg" alt="" data-alt="Lightitude, a lighting concept, product design, September 2025" loading="lazy" width="601" height="900"></li>
+        <li aria-hidden="true"><img src="/assets/lp-work-2.jpg" alt="" data-alt="Crooked Alps collection, apparel" loading="lazy" width="601" height="900"></li>
+        <li aria-hidden="true"><img src="/assets/lp-work-3.jpg" alt="" data-alt="Assise" loading="lazy" width="601" height="900"></li>
+        <li aria-hidden="true"><img src="/assets/lp-work-4.jpg" alt="" data-alt="Milestone watch" loading="lazy" width="601" height="900"></li>
+        <li aria-hidden="true"><img src="/assets/lp-work-5.jpg" alt="" data-alt="Cartier Chessmaster watch concept" loading="lazy" width="601" height="900"></li>
+        <li aria-hidden="true"><img src="/assets/lp-work-6.jpg" alt="" data-alt="Nude Project x Porsche T-shirt" loading="lazy" width="601" height="900"></li>
+        <li aria-hidden="true"><img src="/assets/lp-work-7.jpg" alt="" data-alt="Assise" loading="lazy" width="601" height="900"></li>
+      </ul>
+    </section>
+
+    <!-- 5. Let's talk -->
+    <section class="talk solo" aria-label="For designers">
+      <p class="eyebrow">For designers</p>
+      <h2>Designer too? I might have work for you.</h2>
+      <p>I’m building a studio and I’m always looking for good designers to work with. Send me your work on Instagram.</p>
+      <a class="btn press" href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Let’s talk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </section>
+
+    <!-- 6. Closing card -->
+    <footer class="closing">
+      <div class="frame"><div class="card">
+        <div class="card-top">
+          <p class="pitch">Industrial designer who grew up in ecom. <span>I design products, and the visuals that sell them.</span></p>
+          <div class="cols">
+            <div class="col"><b>Contact</b><a data-calendly href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Book a call</a><a href="mailto:tombobetdesign@gmail.com">Email</a></div>
+            <div class="col"><b>Follow</b><a href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener">YouTube</a><a href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Instagram</a><a href="https://tombobet.substack.com" target="_blank" rel="noopener">Substack</a></div>
+          </div>
         </div>
-      </div>
-    </section>
-
-    <!-- 5. Call to action -->
-    <section class="book-sec" id="book" aria-labelledby="book-title">
-      <p class="eyebrow">Let’s talk</p>
-      <h2 id="book-title">Let’s look at your brand.</h2>
-      <p class="lede">Send me a message on Instagram. I’ll tell you what I’d change, even if we don’t work together.</p>
-      <div class="actions">
-        <a class="btn primary press" href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Let’s talk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-      </div>
-    </section>
+        <div class="stage">
+          <span class="word" aria-hidden="true">Tom Bobet</span>
+          <div class="stickers">
+            <img class="osmo" src="/assets/intro-osmo.png" alt="" loading="lazy">
+            <img class="tom" src="/assets/intro-tom.png" alt="Tom Bobet" loading="lazy">
+            <img class="dancers" src="/assets/intro-dancers.png" alt="" loading="lazy">
+          </div>
+        </div>
+        <div class="card-base"><span>© 2026 Tom Bobet</span><span class="live"><i></i><span data-spots>2 spots left</span></span></div>
+      </div></div>
+    </footer>
   </main>
-
-  <footer class="foot">
-    <div class="foot-top">
-      <p class="foot-pitch">Industrial designer who grew up in ecom. <span>I design products, and the visuals that sell them.</span></p>
-      <div class="foot-cols">
-        <div class="foot-col"><b>Contact</b><a href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Book a call</a><a href="mailto:tombobetdesign@gmail.com">Email</a></div>
-        <div class="foot-col"><b>Follow</b><a href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener">YouTube</a><a href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Instagram</a><a href="https://tombobet.substack.com" target="_blank" rel="noopener">Substack</a></div>
-      </div>
-    </div>
-    <span class="foot-word" aria-hidden="true">Tom Bobet</span>
-    <div class="foot-base"><span>© 2026 Tom Bobet</span><span class="live"><i></i><span>Taking projects</span></span></div>
-  </footer>
 </div>
 
+<script src="/assets/site.js"></script>
+<script src="https://assets.calendly.com/assets/external/widget.js" async></script>
 <script>
-  // Where Tom is right now: the pill shows his local time, the capital and the GMT offset.
-  var CURRENT_COUNTRY = "France";
-  var PLACES = {
-    "France": ["Paris", "Europe/Paris"], "Spain": ["Madrid", "Europe/Madrid"],
-    "Germany": ["Berlin", "Europe/Berlin"], "Italy": ["Rome", "Europe/Rome"],
-    "Netherlands": ["Amsterdam", "Europe/Amsterdam"], "Switzerland": ["Bern", "Europe/Zurich"],
-    "United Kingdom": ["London", "Europe/London"], "United States": ["Washington", "America/New_York"],
-    "Canada": ["Ottawa", "America/Toronto"], "China": ["Beijing", "Asia/Shanghai"],
-    "Japan": ["Tokyo", "Asia/Tokyo"], "South Korea": ["Seoul", "Asia/Seoul"]
-  };
+  // Book a call opens Calendly in a pop-up over the page; without the script it opens Calendly in a new tab.
+  document.querySelectorAll("[data-calendly]").forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      if (!window.Calendly) return;
+      e.preventDefault();
+      Calendly.initPopupWidget({ url: a.href + "?hide_gdpr_banner=1&primary_color=1d6beb" });
+    });
+  });
+</script>
+<script>
+  // Intro: plays once (Hi, I am Tom / stickers / headline), then fades out to the landing page.
   (function () {
-    var place = PLACES[CURRENT_COUNTRY] || PLACES["France"];
-    var clock = new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: place[1] });
-    var zone = new Intl.DateTimeFormat("en-GB", { timeZone: place[1], timeZoneName: "shortOffset" });
-    document.getElementById("city").textContent = place[0];
-    function tick() {
-      var now = new Date(), el = document.getElementById("clock");
-      el.textContent = clock.format(now); el.dateTime = now.toISOString();
-      var off = zone.formatToParts(now).find(function (p) { return p.type === "timeZoneName"; });
-      document.getElementById("offset").textContent = off ? off.value : "";
-    }
-    tick(); setInterval(tick, 15000);
-  })();
-
-  // Intro: one live animation, laid out wide (1440 x 810) or tall (390 x 844) to fit the screen, on a loop.
-  (function () {
-    var intro = document.getElementById("intro");
+    var root = document.documentElement, intro = document.getElementById("intro");
+    if (!root.classList.contains("intro-on")) { intro.remove(); return; }
     var portrait = window.matchMedia("(max-aspect-ratio: 1/1)");
-    var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var durations = [2450, 1900, 3650, 1700, 4650, 700];
-    var timer = null, scene = 0, visible = true, reel = null;
+    var reel = intro.querySelector(portrait.matches ? ".reel.tall" : ".reel.wide");
+    var durations = [2450, 1900, 3300];   // last number: how long the headline holds before the fade
+    var timer = null, scene = 0, done = false;
 
-    function active() { return intro.querySelector(portrait.matches ? ".reel.tall" : ".reel.wide"); }
     function fit() {
       var w = intro.clientWidth, h = intro.clientHeight;
-      document.querySelectorAll(".reel.tall").forEach(function (r) { r.style.setProperty("--k", Math.min(w / 390, h / 844)); });
-      // desktop: the stage sits smaller in the middle of the screen
-      var wide = Math.min(w * .64, h * 1.08, 1100);
-      document.querySelectorAll(".reel.wide").forEach(function (r) { r.style.setProperty("--k", wide / 1440); });
+      intro.querySelector(".reel.tall").style.setProperty("--k", Math.min(w / 390, h / 844));
+      intro.querySelector(".reel.wide").style.setProperty("--k", Math.min(w * .64, h * 1.08, 1100) / 1440);
     }
     function show(i) { scene = i; reel.querySelectorAll(".scene").forEach(function (el) { el.hidden = +el.dataset.s !== i; }); }
-    function step() { timer = setTimeout(function () { show((scene + 1) % durations.length); step(); }, durations[scene]); }
-    function stop() { clearTimeout(timer); timer = null; }
-    function start() { stop(); reel = active(); if (still) { show(2); return; } show(0); step(); }
-
-    new IntersectionObserver(function (e) {
-      visible = e[0].isIntersecting;
-      if (visible) start(); else stop();
-    }).observe(intro);
-    portrait.addEventListener("change", function () { fit(); if (visible) start(); });
+    function next() {
+      timer = setTimeout(function () { if (scene < durations.length - 1) { show(scene + 1); next(); } else finish(); }, durations[scene]);
+    }
+    function finish() {
+      if (done) return; done = true; clearTimeout(timer);
+      try { sessionStorage.setItem("introSeen", "1"); } catch (e) {}
+      window.scrollTo(0, 0);
+      intro.classList.add("leaving");
+      root.classList.remove("intro-on");          // landing fades up underneath
+      setTimeout(function () { intro.remove(); }, 900);
+      ["wheel", "touchmove", "keydown"].forEach(function (t) { window.removeEventListener(t, skip); });
+      window.removeEventListener("resize", fit);
+    }
+    function skip(e) {
+      if (e.type === "keydown" && ["ArrowDown", "PageDown", " ", "Enter", "Escape"].indexOf(e.key) < 0) return;
+      finish();
+    }
+    document.getElementById("introSkip").addEventListener("click", function (e) { e.preventDefault(); finish(); });
+    ["wheel", "touchmove", "keydown"].forEach(function (t) { window.addEventListener(t, skip, { passive: true }); });
     window.addEventListener("resize", fit);
-    fit();
+    window.scrollTo(0, 0);
+    fit(); show(0); next();
   })();
 
-  // The video always plays muted on loop.
-  (function () {
-    var v = document.getElementById("preview"); v.muted = true;
-    var p = v.play();
-    if (p && p.catch) p.catch(function () { document.addEventListener("pointerdown", function () { v.play(); }, { once: true }); });
-  })();
 </script>
 </body>
 </html>
