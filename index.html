@@ -38,8 +38,7 @@
   html { scroll-behavior: smooth; overscroll-behavior-x: none; }
   body { background: #FFFFFF; overflow-x: clip; overscroll-behavior-x: none; }
   .page { padding: 0; }
-  main { width: 100%; transition: opacity 900ms cubic-bezier(.2, .8, .2, 1), transform 900ms cubic-bezier(.2, .8, .2, 1); }
-  .intro-on main { opacity: 0; transform: translateY(24px); }
+  main { width: 100%; }
   html.intro-on { overflow: hidden; }
   :root { --blue: #1D6BEB; --mist: #EBEBEB; --navy: #0D1F3C; }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
@@ -53,10 +52,10 @@
   /* ---------- intro: plays once per visit over the page, the island stays on top ---------- */
   .intro {
     display: none; position: fixed; inset: 0; z-index: 15; overflow: hidden; max-width: none;
-    background: #F4F4F4; transition: opacity 800ms cubic-bezier(.4, 0, .2, 1), filter 800ms ease;
+    background: #F4F4F4; transition: opacity 600ms cubic-bezier(.4, 0, .2, 1), transform 700ms cubic-bezier(.6, 0, .2, 1);
   }
   .intro-on .intro { display: block; }
-  .intro.leaving { opacity: 0; filter: blur(6px); pointer-events: none; }
+  .intro.leaving { opacity: 0; transform: translateY(-8%); pointer-events: none; }
   .intro .cue {
     position: absolute; left: 50%; bottom: max(24px, env(safe-area-inset-bottom)); transform: translateX(-50%); z-index: 3;
     display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 999px;
@@ -96,83 +95,178 @@
   .reel .down { animation: down 950ms cubic-bezier(.65, 0, .2, 1) both; }
   @keyframes down { to { transform: translateY(var(--dy)) scale(var(--ds)); } }
 
-  /* ---------- 1. hero: design is the moat ---------- */
-  .hero { margin-top: -72px; background: var(--blue); padding: 72px 0 0; }
-  .hero img { display: block; width: 100%; max-width: 1440px; height: auto; margin: 0 auto; aspect-ratio: 2500 / 1080; }
+  /* ---------- intro hand-off: the intro lifts away while the landing reveals in a stagger (< 1s) ---------- */
+  .hero picture, .hero img, .ticker, .reasons > .inner { transition: opacity 700ms cubic-bezier(.2, .8, .2, 1), transform 900ms cubic-bezier(.2, .8, .2, 1); }
+  .ticker { transition-delay: 160ms; } .reasons > .inner { transition-delay: 260ms; }
+  .intro-on .hero img { opacity: 0; transform: scale(1.06) translateY(3%); }
+  .intro-on .ticker { opacity: 0; transform: translateY(16px); }
+  .intro-on .reasons > .inner { opacity: 0; transform: translateY(32px); }
 
-  /* ---------- 2. spots ticker ---------- */
+  /* ---------- 1. hero: picture switches to the tall version on phones ---------- */
+  .hero { margin-top: -72px; background: var(--blue); padding: 72px 0 0; overflow: hidden; }
+  .hero img { display: block; width: 100%; max-width: 1440px; height: auto; margin: 0 auto; aspect-ratio: 2500 / 1080; }
+  @media (max-width: 760px) { .hero img { aspect-ratio: 924 / 1720; max-width: 560px; } }
+
+  /* ---------- 2. offer ticker ---------- */
   .ticker { overflow: hidden; background: #F2F2F2; border-block: 1px solid rgba(13, 31, 60, .06); }
-  .ticker .track { display: flex; width: max-content; animation: tick 40s linear infinite; }
-  .ticker span { flex: none; padding: 12px 32px 12px 16px; font-size: 14px; font-weight: 500; letter-spacing: -.01em; color: var(--navy); white-space: nowrap; }
+  .ticker .track { display: flex; width: max-content; animation: tick 50s linear infinite; }
+  .ticker span { flex: none; padding: 12px 36px 12px 18px; font-size: 14px; font-weight: 500; letter-spacing: -.01em; color: var(--navy); white-space: nowrap; }
+  .ticker em { font-style: normal; color: rgba(13, 31, 60, .55); }
   .ticker b { font-weight: 700; }
+  .ticker i { display: inline-block; width: 7px; height: 7px; margin: 0 8px 1px 2px; border-radius: 50%; background: #34C759; box-shadow: 0 0 0 3px rgba(52, 199, 89, .25); }
   @keyframes tick { to { transform: translateX(-50%); } }
 
-  /* ---------- 3. three reasons ---------- */
-  .reasons { background: var(--blue); color: var(--mist); text-align: center; padding: clamp(56px, 8vw, 96px) 24px clamp(64px, 9vw, 112px); }
+  /* ---------- 3. blue section: accordion ---------- */
+  .reasons { position: relative; overflow: hidden; color: var(--mist); text-align: center; padding: clamp(64px, 9vw, 112px) 20px clamp(72px, 9vw, 120px); background: var(--blue); }
+  .reasons > .inner { position: relative; z-index: 2; }
   .reasons .logo { width: 72px; height: auto; margin: 0 auto; }
-  .reasons h2 { margin: 24px auto 0; max-width: 12em; font-family: var(--display); font-weight: 600; font-size: clamp(32px, 3.6vw, 48px); line-height: 1.05; letter-spacing: -.045em; text-wrap: balance; }
-  .reasons ol { list-style: none; padding: 0; margin: clamp(64px, 9vw, 120px) auto 0; max-width: 1180px; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(28px, 4vw, 64px); text-align: left; counter-reset: r; }
-  .reasons li { counter-increment: r; }
-  .reasons li::before { content: "0" counter(r); display: block; margin-bottom: 14px; font-size: 13px; font-weight: 600; letter-spacing: .04em; color: rgba(235, 235, 235, .6); }
-  .reasons h3 { margin: 0; font-family: var(--display); font-size: clamp(20px, 1.8vw, 24px); font-weight: 600; line-height: 1.15; letter-spacing: -.03em; color: #FFFFFF; }
-  .reasons li p { margin-top: 12px; font-size: 16px; line-height: 1.5; letter-spacing: -.01em; color: rgba(235, 235, 235, .82); }
-  .reasons li .fix { display: block; margin-top: 14px; padding-top: 14px; border-top: 1px solid rgba(255, 255, 255, .22); color: #FFFFFF; font-weight: 500; }
-  .reasons .relax { margin-top: clamp(80px, 12vw, 160px); font-family: var(--display); font-weight: 600; font-size: clamp(30px, 3.2vw, 44px); letter-spacing: -.05em; }
-  .talk { background: #F5F5F7; color: var(--ink); text-align: center; padding: clamp(48px, 6vw, 72px) 24px; }
+  .reasons h2 { margin: 24px auto 0; max-width: 12em; font-family: var(--display); font-weight: 600; font-size: clamp(32px, 3.6vw, 48px); line-height: 1.05; letter-spacing: -.045em; text-wrap: balance; color: #FFFFFF; }
+  .acc { list-style: none; padding: 0; margin: clamp(40px, 6vw, 72px) auto 0; max-width: 820px; text-align: left; border-top: 1px solid rgba(255, 255, 255, .24); }
+  .acc li { border-bottom: 1px solid rgba(255, 255, 255, .24); }
+  .acc button { all: unset; box-sizing: border-box; width: 100%; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: clamp(16px, 2.4vw, 32px); padding: clamp(20px, 2.6vw, 30px) 4px; cursor: pointer; color: #FFFFFF; }
+  .acc button:focus-visible { outline: 2px solid #FFFFFF; outline-offset: 4px; border-radius: 8px; }
+  .acc .num { font-family: var(--display); font-weight: 700; font-size: clamp(34px, 4.4vw, 60px); line-height: 1; letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1.2px rgba(255, 255, 255, .7); transition: color 300ms ease, -webkit-text-stroke-color 300ms ease; }
+  .acc .t { font-family: var(--display); font-weight: 600; font-size: clamp(20px, 2.2vw, 28px); line-height: 1.15; letter-spacing: -.03em; }
+  .acc .pm { position: relative; width: 40px; height: 40px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .45); transition: background-color 250ms ease, transform 400ms cubic-bezier(.2, .8, .2, 1); }
+  .acc .pm::before, .acc .pm::after { content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 1.6px; margin: -.8px 0 0 -7px; border-radius: 2px; background: #FFFFFF; transition: transform 400ms cubic-bezier(.2, .8, .2, 1); }
+  .acc .pm::after { transform: rotate(90deg); }
+  .acc button:hover .pm { background: rgba(255, 255, 255, .14); }
+  .acc button:hover .num, .acc li.open .num { color: #FFFFFF; -webkit-text-stroke-color: #FFFFFF; }
+  .acc li.open .pm { transform: rotate(180deg); background: #FFFFFF; }
+  .acc li.open .pm::before { background: var(--blue); }
+  .acc li.open .pm::after { transform: rotate(0deg); background: var(--blue); }
+  .acc .panel { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 450ms cubic-bezier(.2, .8, .2, 1); }
+  .acc li.open .panel { grid-template-rows: 1fr; }
+  .acc .panel > div { overflow: hidden; }
+  .acc .panel p { margin: 0; padding: 0 56px clamp(22px, 2.6vw, 30px) calc(clamp(34px, 4.4vw, 60px) * 1.25 + clamp(16px, 2.4vw, 32px)); font-size: 17px; line-height: 1.55; color: rgba(235, 235, 235, .86); opacity: 0; transform: translateY(-6px); transition: opacity 350ms ease, transform 450ms cubic-bezier(.2, .8, .2, 1); }
+  .acc li.open .panel p { opacity: 1; transform: none; transition-delay: 80ms; }
+  .acc .fix { display: block; margin-top: 12px; color: #FFFFFF; font-weight: 500; }
+  .relax { margin: clamp(80px, 12vw, 160px) auto 0; font-family: var(--display); font-weight: 600; font-size: clamp(30px, 3.2vw, 44px); letter-spacing: -.05em; color: var(--mist); }
+
+  .talk { background: #F5F5F7; color: var(--ink); text-align: center; }
   .talk .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
-  .talk h2 { margin-top: 14px; font-family: var(--display); font-weight: 600; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -.035em; }
-  .talk p { margin: 18px auto 0; max-width: 31em; font-size: 15px; line-height: 1.55; color: var(--ink-2); }
-  .talk .btn { margin-top: 28px; display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 20px; border-radius: 999px; background: #000000; color: #FFFFFF; font-size: 14px; font-weight: 600; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .4); }
-  .talk .btn svg { width: 14px; height: 14px; transition: transform 300ms cubic-bezier(.2, .8, .2, 1); }
-  .talk .btn:hover svg { transform: translateX(3px); }
-  .reasons .talk { max-width: 720px; margin: clamp(56px, 8vw, 96px) auto 0; border-radius: clamp(28px, 3vw, 40px); padding: clamp(36px, 4.5vw, 52px) 28px; }
-  .reasons .talk p { margin-top: 12px; }
-  .reasons .talk .btn { margin-top: 22px; }
+  .talk h2 { margin-top: 14px; font-family: var(--display); font-weight: 600; font-size: clamp(30px, 3.4vw, 44px); line-height: 1.05; letter-spacing: -.035em; color: var(--ink); }
+  .talk p { margin: 12px auto 0; max-width: 31em; font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+  .btn { display: inline-flex; align-items: center; gap: 10px; height: 46px; padding: 0 22px; border-radius: 999px; background: #000000; color: #FFFFFF; font-size: 14px; font-weight: 600; box-shadow: 0 6px 16px -6px rgba(0, 0, 0, .4); }
+  .btn svg { width: 14px; height: 14px; transition: transform 300ms cubic-bezier(.2, .8, .2, 1); }
+  .btn:hover svg { transform: translateX(3px); }
+  .talk .btn { margin-top: 22px; }
+  .reasons .talk { max-width: 720px; margin: clamp(48px, 7vw, 88px) auto 0; border-radius: clamp(28px, 3vw, 40px); padding: clamp(36px, 4.5vw, 52px) 28px; box-shadow: 0 40px 80px -40px rgba(6, 30, 80, .5); }
 
-  /* ---------- 4. work strip ---------- */
-  .work { background: #FFFFFF; padding: clamp(40px, 5vw, 72px) 0; overflow: hidden; }
-  .work ul { list-style: none; margin: 0; padding: 0; display: flex; width: max-content; animation: slide 60s linear infinite; }
-  .work:hover ul { animation-play-state: paused; }
-  .work li { flex: none; width: clamp(220px, 21vw, 320px); margin-right: clamp(14px, 1.6vw, 24px); }
-  @keyframes slide { to { transform: translateX(-50%); } }
-  .work li img { width: 100%; height: auto; aspect-ratio: 601 / 900; border-radius: 4px; }
+  /* ---------- 4. work carousel: swipe, drag, arrows ---------- */
+  .work { background: #FFFFFF; padding: clamp(48px, 6vw, 88px) 0 clamp(40px, 5vw, 72px); }
+  .work-head { max-width: 1440px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 40px); display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .work-head .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+  .work-head h2 { margin-top: 8px; font-family: var(--display); font-weight: 600; font-size: clamp(26px, 2.8vw, 36px); letter-spacing: -.035em; line-height: 1.1; }
+  .arrows { display: flex; gap: 8px; }
+  .arrows button { all: unset; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: #F2F2F4; color: var(--ink); transition: background-color 200ms ease, opacity 200ms ease; }
+  .arrows button:hover { background: #E6E6EA; }
+  .arrows button:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .arrows button[disabled] { opacity: .35; cursor: default; }
+  .arrows svg { width: 18px; height: 18px; }
+  .track-wrap { margin-top: clamp(20px, 2.4vw, 32px); }
+  .rail { display: flex; gap: clamp(10px, 1.1vw, 16px); overflow-x: auto; padding: 8px clamp(16px, 3vw, 40px) 20px; scrollbar-width: none; overscroll-behavior-x: contain; cursor: grab; }
+  .rail::-webkit-scrollbar { display: none; }
+  .rail.dragging { cursor: grabbing; }
+  .rail.dragging * { pointer-events: none; }
+  .rail li { list-style: none; flex: none; width: clamp(170px, 14vw, 230px); }
+  .rail figure { margin: 0; border-radius: 6px; overflow: hidden; background: #F2F2F2; transform: translateZ(0); transition: transform 500ms cubic-bezier(.2, .8, .2, 1), box-shadow 500ms ease; }
+  .rail img { display: block; width: 100%; height: auto; aspect-ratio: 601 / 900; transition: transform 700ms cubic-bezier(.2, .8, .2, 1); user-select: none; -webkit-user-drag: none; }
+  @media (hover: hover) {
+    .rail li:hover figure { transform: translateY(-6px); box-shadow: 0 24px 40px -24px rgba(0, 0, 0, .35); }
+    .rail li:hover img { transform: scale(1.035); }
+  }
 
-  /* ---------- 5. let's talk ---------- */
-  .talk.solo { padding: clamp(56px, 7vw, 96px) 24px; }
-
-  /* ---------- 6. closing card: stickers + footer ---------- */
-  .closing { background: #F5F5F7; padding: 0 16px clamp(32px, 4vw, 56px); }
+  /* ---------- 5. closing: one headline, grouped links, stickers ---------- */
+  .closing { background: #F5F5F7; padding: clamp(48px, 6vw, 88px) 16px clamp(32px, 4vw, 56px); }
   .frame { max-width: 1240px; margin: 0 auto; padding: 12px; border-radius: 44px; background: #FFFFFF; box-shadow: 0 1px 2px rgba(0, 0, 0, .05), 0 30px 70px -34px rgba(0, 0, 0, .3); }
-  .card { position: relative; overflow: hidden; border-radius: 34px; background: var(--blue); color: #FFFFFF; padding: clamp(28px, 4vw, 52px) clamp(24px, 4vw, 52px) 0; }
-  .card-top { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 32px; }
-  .card .pitch { max-width: 17em; font-family: var(--display); font-size: clamp(22px, 2.3vw, 30px); font-weight: 600; line-height: 1.12; letter-spacing: -.03em; }
-  .card .pitch span { font-weight: 400; color: rgba(255, 255, 255, .62); }
-  .card .cols { display: flex; gap: clamp(32px, 5vw, 72px); }
-  .card .col { display: flex; flex-direction: column; gap: 9px; font-size: 15px; }
-  .card .col b { margin-bottom: 4px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255, 255, 255, .55); }
-  .card .col a { color: rgba(255, 255, 255, .88); transition: color 200ms ease-out; }
-  .card .col a:hover { color: #FFFFFF; }
-  .stage { position: relative; height: clamp(320px, 34vw, 470px); margin-top: clamp(8px, 2vw, 24px); }
+  .card { position: relative; overflow: hidden; border-radius: 34px; background: radial-gradient(90% 80% at 0% 0%, #3A82F5 0%, rgba(58, 130, 245, 0) 60%), var(--blue); color: #FFFFFF; padding: clamp(32px, 4.5vw, 60px) clamp(24px, 4.5vw, 60px) 0; }
+  .card-top { position: relative; z-index: 3; display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+  .card .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255, 255, 255, .6); }
+  .card h2 { margin-top: 12px; max-width: 13em; font-family: var(--display); font-size: clamp(28px, 3.2vw, 44px); font-weight: 600; line-height: 1.06; letter-spacing: -.04em; }
+  .card .lede { margin-top: 14px; max-width: 30em; font-size: 16px; line-height: 1.55; color: rgba(255, 255, 255, .78); }
+  .card .btn { margin-top: 24px; background: #FFFFFF; color: #000000; box-shadow: 0 10px 24px -10px rgba(0, 0, 0, .35); }
+  .card .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding-top: 6px; }
+  .card .col { display: flex; flex-direction: column; gap: 10px; font-size: 15px; }
+  .card .col b { margin-bottom: 2px; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: rgba(255, 255, 255, .55); }
+  .card .col a { width: fit-content; color: rgba(255, 255, 255, .88); background: linear-gradient(currentColor, currentColor) left bottom / 0 1px no-repeat; transition: color 200ms ease-out, background-size 300ms cubic-bezier(.2, .8, .2, 1); }
+  .card .col a:hover { color: #FFFFFF; background-size: 100% 1px; }
+  .stage { position: relative; height: clamp(300px, 32vw, 450px); margin-top: clamp(16px, 3vw, 40px); }
   .stage .word { position: absolute; z-index: 0; left: 50%; bottom: -.14em; transform: translateX(-50%); font-family: var(--display); font-weight: 700; font-size: clamp(76px, 16.5vw, 228px); line-height: 1; letter-spacing: -.055em; white-space: nowrap; background: linear-gradient(to bottom, rgba(255, 255, 255, .95), rgba(255, 255, 255, .18)); -webkit-background-clip: text; background-clip: text; color: transparent; pointer-events: none; }
   .stickers { position: absolute; z-index: 1; left: 50%; bottom: 0; height: 100%; aspect-ratio: 443 / 482; transform: translateX(-46%); }
-  .stickers img { position: absolute; max-width: none; height: auto; filter: drop-shadow(0 18px 26px rgba(0, 0, 0, .25)); }
+  .stickers img { position: absolute; max-width: none; height: auto; filter: drop-shadow(0 18px 26px rgba(0, 0, 0, .25)); transition: transform 500ms cubic-bezier(.2, .9, .3, 1.3); }
   .stickers .tom { left: 27%; top: 0; width: 63%; }
   .stickers .osmo { left: 0; top: 34%; width: 25%; }
   .stickers .dancers { left: 74.5%; top: 20%; width: 25.5%; }
-  .card-base { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 0 calc(clamp(24px, 4vw, 52px) * -1); padding: 16px clamp(24px, 4vw, 52px) 18px; border-top: 1px solid rgba(255, 255, 255, .2); background: rgba(29, 107, 235, .72); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: rgba(255, 255, 255, .75); }
+  @media (hover: hover) { .stage:hover .osmo { transform: rotate(-8deg) translateY(-6px); } .stage:hover .dancers { transform: rotate(10deg) translateY(-8px); } }
+  .card-base { position: relative; z-index: 3; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin: 0 calc(clamp(24px, 4.5vw, 60px) * -1); padding: 16px clamp(24px, 4.5vw, 60px) 18px; border-top: 1px solid rgba(255, 255, 255, .2); background: rgba(29, 107, 235, .72); -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px); font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: rgba(255, 255, 255, .75); }
   .card-base .live { display: inline-flex; align-items: center; gap: 8px; }
   .card-base .live i { width: 7px; height: 7px; border-radius: 50%; background: #34C759; box-shadow: 0 0 0 3px rgba(52, 199, 89, .3); }
 
+  /* ---------- 6. promo pop-up: centred card on desktop, bottom sheet on phones ---------- */
+  .promo { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; padding: 24px; visibility: hidden; }
+  .promo.show { visibility: visible; }
+  .promo .scrim { position: absolute; inset: 0; background: rgba(8, 18, 40, .45); opacity: 0; transition: opacity 350ms ease; }
+  .promo.show .scrim { opacity: 1; }
+  .promo .box { position: relative; display: grid; grid-template-columns: 1fr 1.05fr; width: min(820px, 100%); padding: 14px; border-radius: 36px; background: #EBEBEB; box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .45); opacity: 0; transform: translateY(24px) scale(.97); transition: opacity 350ms ease, transform 500ms cubic-bezier(.2, .9, .3, 1.1); }
+  .promo.show .box { opacity: 1; transform: none; }
+  .promo .photo { border-radius: 26px; overflow: hidden; min-height: 380px; background: #111 center / cover no-repeat; }
+  .promo .copy { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 36px 28px; color: #000000; }
+  .promo .copy img { width: 92px; height: auto; }
+  .promo .copy ._tag { margin-top: 18px; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--blue); }
+  .promo .copy h2 { margin-top: 22px; font-family: var(--display); font-weight: 700; font-size: clamp(34px, 3.5vw, 50px); line-height: .95; letter-spacing: -.045em; text-transform: uppercase; white-space: nowrap; }
+  .promo .copy p { margin-top: 16px; max-width: 19em; font-size: 17px; line-height: 1.45; letter-spacing: -.01em; color: #1D1D1F; }
+  .promo .copy p b { font-weight: 600; }
+  .promo .copy .btn { margin-top: 26px; height: 52px; padding: 0 28px; font-size: 15px; background: #000000; box-shadow: 0 12px 24px -12px rgba(0, 0, 0, .55); }
+  .promo .copy .btn:hover { background: var(--blue); }
+  .promo .copy .later { all: unset; cursor: pointer; margin-top: 14px; font-size: 13px; color: #6E6E73; text-decoration: underline; text-underline-offset: 3px; }
+  .promo .copy small { display: inline-flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 12px; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: #6E6E73; }
+  .promo .copy small i { width: 7px; height: 7px; border-radius: 50%; background: #34C759; box-shadow: 0 0 0 3px rgba(52, 199, 89, .25); }
+  .promo .x { all: unset; cursor: pointer; position: absolute; top: 24px; right: 24px; z-index: 2; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: #FFFFFF; color: #000; box-shadow: 0 2px 10px rgba(0, 0, 0, .15); transition: transform 200ms ease, background-color 200ms ease; }
+  .promo .x:hover { transform: rotate(90deg); background: #000; color: #FFF; }
+  .promo .x:focus-visible, .promo .later:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .promo .x svg { width: 16px; height: 16px; }
+
+  /* ---------- scroll reveals + custom cursor ---------- */
+  [data-reveal] { opacity: 0; transform: translateY(28px); transition: opacity 800ms cubic-bezier(.2, .8, .2, 1), transform 900ms cubic-bezier(.2, .8, .2, 1); transition-delay: var(--d, 0ms); }
+  [data-reveal].in { opacity: 1; transform: none; }
+  .cursor { position: fixed; z-index: 60; left: 0; top: 0; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--blue); pointer-events: none; display: grid; place-items: center; color: #FFFFFF; font-size: 12px; font-weight: 600; letter-spacing: .02em; opacity: 0; transition: width 300ms cubic-bezier(.2, .8, .2, 1), height 300ms cubic-bezier(.2, .8, .2, 1), margin 300ms cubic-bezier(.2, .8, .2, 1), background-color 300ms ease, opacity 200ms ease; }
+  .cursor span { opacity: 0; transition: opacity 200ms ease; }
+  .cursor.on { opacity: 1; }
+  .cursor.link { width: 40px; height: 40px; margin: -20px 0 0 -20px; background: rgba(29, 107, 235, .18); }
+  .cursor.drag { width: 76px; height: 76px; margin: -38px 0 0 -38px; background: var(--blue); }
+  .cursor.drag span { opacity: 1; }
+  .cursor.light { background: #FFFFFF; }
+  .cursor.light.link { background: rgba(255, 255, 255, .3); }
+
   @media (max-width: 760px) {
+    .acc .panel p { padding: 0 8px 22px 0; font-size: 16px; }
+    .acc .pm { width: 34px; height: 34px; }
+    .work-head .arrows { display: none; }
+    .rail li { width: 44vw; }
     .frame { border-radius: 30px; padding: 6px; }
     .card { border-radius: 25px; }
-    .card .cols { width: 100%; justify-content: flex-start; }
+    .card-top { grid-template-columns: 1fr; gap: 32px; }
     .stage { height: 270px; }
     .stage .word { font-size: 84px; bottom: -.08em; }
     .stickers { transform: translateX(-48%); }
-    .reasons ol { grid-template-columns: 1fr; gap: 40px; margin-top: 56px; }
+    .promo { place-items: end center; padding: 0; }
+    .promo .box { grid-template-columns: 1fr; width: 100%; border-radius: 28px 28px 0 0; padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); transform: translateY(100%); }
+    .promo .photo { display: none; }
+    .promo .copy { padding: 30px 22px 18px; }
+    .promo .copy img { width: 70px; }
+    .promo .copy h2 { font-size: 36px; margin-top: 16px; }
+    .promo .copy p { font-size: 15px; }
+    .promo .copy .btn { width: 100%; justify-content: center; }
+    .promo .x { top: 16px; right: 16px; }
+    .promo .grab { display: block; width: 40px; height: 5px; margin: 6px auto 0; border-radius: 3px; background: rgba(0, 0, 0, .18); }
   }
-  @media (prefers-reduced-motion: reduce) { .ticker .track, .work ul { animation: none; } .work { overflow-x: auto; } }
+  .promo .grab { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker .track { animation: none; }
+    [data-reveal] { opacity: 1; transform: none; transition: none; }
+    .acc .panel, .acc .panel p, .promo .box { transition: none; }
+  }
 </style>
 </head>
 <body>
@@ -240,79 +334,87 @@
   </section>
 
   <main id="top">
-    <!-- 1. Hero -->
+    <!-- 1. Hero: wide picture on desktop, tall picture on phones -->
     <section class="hero" aria-labelledby="hero-title">
       <h1 class="sr" id="hero-title">Design is the moat. Build yours. Tom Bobet, creative director: outstanding design makes brands unforgettable.</h1>
-      <img src="/assets/lp-hero.jpg" alt="" width="2500" height="1080" fetchpriority="high">
+      <picture>
+        <source media="(max-width: 760px)" srcset="/assets/lp-hero-mobile.jpg" width="924" height="1720">
+        <img src="/assets/lp-hero.jpg" alt="" width="2500" height="1080" fetchpriority="high">
+      </picture>
     </section>
 
-    <!-- 2. Open spots -->
-    <div class="ticker" aria-label="Open spots"><div class="track"><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span><span>DESIGNER I&nbsp; <b data-spots>1 spot left</b></span></div></div>
+    <!-- 2. The offer, on a loop -->
+    <div class="ticker" aria-label="Offer: design for ecom brands"><div class="track"><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span><span>Design for ecom brands&nbsp;&nbsp;<i></i><b data-spots>2 spots left</b></span></div></div>
 
-    <!-- 3. Three reasons + let's talk -->
-    <section class="reasons" aria-labelledby="reasons-title">
-      <img class="logo" src="/assets/lp-logo-light.png" alt="Tom Bobet" width="700" height="329">
-      <h2 id="reasons-title">Three reasons your brand isn’t an asset yet.</h2>
-      <ol>
-        <li>
-          <h3>You sell a product you don’t own.</h3>
-          <p>The same item, from the same supplier, is in a hundred other stores. Anything anyone can source isn’t an asset.<span class="fix">→ The fix is a product that’s yours alone (product design).</span></p>
+    <!-- 3. Three reasons, as an accordion, on a living blue -->
+    <section class="reasons" id="reasons" aria-labelledby="reasons-title">
+      <div class="inner">
+        <img class="logo" src="/assets/lp-logo-light.png" alt="Tom Bobet" width="700" height="329" data-reveal>
+        <h2 id="reasons-title" data-reveal style="--d:80ms">Three reasons your brand isn’t an asset yet.</h2>
+        <ol class="acc">
+        <li data-reveal style="--d:0ms">
+          <button type="button" aria-expanded="false" aria-controls="r1" id="rb1"><span class="num" aria-hidden="true">01</span><span class="t">You sell a product you don’t own.</span><span class="pm" aria-hidden="true"></span></button>
+          <div class="panel" id="r1" role="region" aria-labelledby="rb1"><div><p>The same item, from the same supplier, is in a hundred other stores. Anything anyone can source isn’t an asset.<span class="fix">→ The fix is a product that’s yours alone (product design).</span></p></div></div>
         </li>
-        <li>
-          <h3>Customers buy the deal, not the brand.</h3>
-          <p>Without an identity, nobody remembers you or comes back, and you can’t charge more. You’re one cheaper copy away from losing them.<span class="fix">→ The fix is an identity people remember (brand).</span></p>
+        <li data-reveal style="--d:90ms">
+          <button type="button" aria-expanded="false" aria-controls="r2" id="rb2"><span class="num" aria-hidden="true">02</span><span class="t">Customers buy the deal, not the brand.</span><span class="pm" aria-hidden="true"></span></button>
+          <div class="panel" id="r2" role="region" aria-labelledby="rb2"><div><p>Without an identity, nobody remembers you or comes back, and you can’t charge more. You’re one cheaper copy away from losing them.<span class="fix">→ The fix is an identity people remember (brand).</span></p></div></div>
         </li>
-        <li>
-          <h3>Your growth is rented.</h3>
-          <p>Every sale comes from paid attention. Stop the ads and the store stops. Nothing you make keeps working for you.<span class="fix">→ The fix is creative that builds recognition with every ad (the moat).</span></p>
+        <li data-reveal style="--d:180ms">
+          <button type="button" aria-expanded="false" aria-controls="r3" id="rb3"><span class="num" aria-hidden="true">03</span><span class="t">Your growth is rented.</span><span class="pm" aria-hidden="true"></span></button>
+          <div class="panel" id="r3" role="region" aria-labelledby="rb3"><div><p>Every sale comes from paid attention. Stop the ads and the store stops. Nothing you make keeps working for you.<span class="fix">→ The fix is creative that builds recognition with every ad (the moat).</span></p></div></div>
         </li>
-      </ol>
-      <p class="relax">relax, I got you</p>
-      <div class="talk">
-      <p class="eyebrow">For brands</p>
-      <h2>Let’s look at your brand.</h2>
-      <p>A short call. I’ll tell you what I’d change, even if we don’t work together.</p>
-      <a class="btn press" data-calendly href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </ol>
+        <p class="relax" data-reveal>relax, I got you</p>
+        <div class="talk" data-reveal>
+          <p class="eyebrow">For brands</p>
+          <h2>Let’s look at your brand.</h2>
+          <p>A short call. I’ll tell you what I’d change, even if we don’t work together.</p>
+          <a class="btn press" data-calendly href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
       </div>
     </section>
 
-    <!-- 4. Work -->
-    <section class="work" aria-label="Selected work">
-      <ul>
-        <li><img src="/assets/lp-work-1.jpg" alt="Lightitude, a lighting concept, product design, September 2025" loading="lazy" width="601" height="900"></li>
-        <li><img src="/assets/lp-work-2.jpg" alt="Crooked Alps collection, apparel" loading="lazy" width="601" height="900"></li>
-        <li><img src="/assets/lp-work-3.jpg" alt="Assise" loading="lazy" width="601" height="900"></li>
-        <li><img src="/assets/lp-work-4.jpg" alt="Milestone watch" loading="lazy" width="601" height="900"></li>
-        <li><img src="/assets/lp-work-5.jpg" alt="Cartier Chessmaster watch concept" loading="lazy" width="601" height="900"></li>
-        <li><img src="/assets/lp-work-6.jpg" alt="Nude Project x Porsche T-shirt" loading="lazy" width="601" height="900"></li>
-        <li><img src="/assets/lp-work-7.jpg" alt="Assise" loading="lazy" width="601" height="900"></li>
-        <li aria-hidden="true"><img src="/assets/lp-work-1.jpg" alt="" data-alt="Lightitude, a lighting concept, product design, September 2025" loading="lazy" width="601" height="900"></li>
-        <li aria-hidden="true"><img src="/assets/lp-work-2.jpg" alt="" data-alt="Crooked Alps collection, apparel" loading="lazy" width="601" height="900"></li>
-        <li aria-hidden="true"><img src="/assets/lp-work-3.jpg" alt="" data-alt="Assise" loading="lazy" width="601" height="900"></li>
-        <li aria-hidden="true"><img src="/assets/lp-work-4.jpg" alt="" data-alt="Milestone watch" loading="lazy" width="601" height="900"></li>
-        <li aria-hidden="true"><img src="/assets/lp-work-5.jpg" alt="" data-alt="Cartier Chessmaster watch concept" loading="lazy" width="601" height="900"></li>
-        <li aria-hidden="true"><img src="/assets/lp-work-6.jpg" alt="" data-alt="Nude Project x Porsche T-shirt" loading="lazy" width="601" height="900"></li>
-        <li aria-hidden="true"><img src="/assets/lp-work-7.jpg" alt="" data-alt="Assise" loading="lazy" width="601" height="900"></li>
-      </ul>
+    <!-- 4. Work: swipe, drag, arrows -->
+    <section class="work" aria-labelledby="work-title">
+      <div class="work-head" data-reveal>
+        <div><p class="eyebrow">Selected work</p><h2 id="work-title">Products I’ve designed.</h2></div>
+        <div class="arrows"><button type="button" class="prev" aria-label="Previous project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button><button type="button" class="next" aria-label="Next project"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></button></div>
+      </div>
+      <div class="track-wrap">
+        <ul class="rail" tabindex="0" aria-label="Projects, scroll sideways">
+        <li><figure><img src="/assets/lp-work-1.jpg" alt="Lightitude, a lighting concept. Product design, September 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li><figure><img src="/assets/lp-work-2.jpg" alt="Crooked Alps collection. Fashion design, December 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li><figure><img src="/assets/lp-work-3.jpg" alt="Assise, stainless-steel panels supporting leather cubes. Product design, October 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li><figure><img src="/assets/lp-work-4.jpg" alt="Milestone, the first watch from the brand I co-founded. Product design, summer 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li><figure><img src="/assets/lp-work-5.jpg" alt="Cartier Chessmaster, a watch concept. Product design, October 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li><figure><img src="/assets/lp-work-6.jpg" alt="Nude Project x Porsche T-shirt. Fashion design, 2024" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li><figure><img src="/assets/lp-work-7.jpg" alt="Assise, final model. Product design, September 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li aria-hidden="true"><figure><img src="/assets/lp-work-1.jpg" alt="" data-alt="Lightitude, a lighting concept. Product design, September 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li aria-hidden="true"><figure><img src="/assets/lp-work-2.jpg" alt="" data-alt="Crooked Alps collection. Fashion design, December 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li aria-hidden="true"><figure><img src="/assets/lp-work-3.jpg" alt="" data-alt="Assise, stainless-steel panels supporting leather cubes. Product design, October 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li aria-hidden="true"><figure><img src="/assets/lp-work-4.jpg" alt="" data-alt="Milestone, the first watch from the brand I co-founded. Product design, summer 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li aria-hidden="true"><figure><img src="/assets/lp-work-5.jpg" alt="" data-alt="Cartier Chessmaster, a watch concept. Product design, October 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li aria-hidden="true"><figure><img src="/assets/lp-work-6.jpg" alt="" data-alt="Nude Project x Porsche T-shirt. Fashion design, 2024" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        <li aria-hidden="true"><figure><img src="/assets/lp-work-7.jpg" alt="" data-alt="Assise, final model. Product design, September 2025" loading="lazy" width="601" height="900" draggable="false"></figure></li>
+        </ul>
+      </div>
     </section>
 
-    <!-- 5. Let's talk -->
-    <section class="talk solo" aria-label="For designers">
-      <p class="eyebrow">For designers</p>
-      <h2>Designer too? I might have work for you.</h2>
-      <p>I’m building a studio and I’m always looking for good designers to work with. Send me your work on Instagram.</p>
-      <a class="btn press" href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Let’s talk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-    </section>
-
-    <!-- 6. Closing card -->
+    <!-- 5. Closing: designers headline, grouped links, stickers -->
     <footer class="closing">
-      <div class="frame"><div class="card">
+      <div class="frame" data-reveal><div class="card">
         <div class="card-top">
-          <p class="pitch">Industrial designer who grew up in ecom. <span>I design products, and the visuals that sell them.</span></p>
-          <div class="cols">
+          <div>
+            <p class="eyebrow">For designers</p>
+            <h2>Designer too? I might have work for you.</h2>
+            <p class="lede">I’m building a studio and I’m always looking for good designers to work with. Send me your work on Instagram.</p>
+            <a class="btn press" href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Let’s talk <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <nav class="cols" aria-label="Contact and social">
             <div class="col"><b>Contact</b><a data-calendly href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Book a call</a><a href="mailto:tombobetdesign@gmail.com">Email</a></div>
             <div class="col"><b>Follow</b><a href="https://www.youtube.com/@TomBobet" target="_blank" rel="noopener">YouTube</a><a href="https://www.instagram.com/tombobet_/" target="_blank" rel="noopener">Instagram</a><a href="https://tombobet.substack.com" target="_blank" rel="noopener">Substack</a></div>
-          </div>
+          </nav>
         </div>
         <div class="stage">
           <span class="word" aria-hidden="true">Tom Bobet</span>
@@ -327,6 +429,26 @@
     </footer>
   </main>
 </div>
+
+<!-- Promo pop-up: once per visit, on the first scroll down -->
+<div class="promo" id="promo" role="dialog" aria-modal="true" aria-labelledby="promo-title" aria-hidden="true">
+  <div class="scrim" data-close></div>
+  <div class="box">
+    <span class="grab" aria-hidden="true"></span>
+    <div class="photo" style="background-image:url('/assets/lp-popup.jpg')" role="img" aria-label="Editing a video on a laptop at an event"></div>
+    <div class="copy">
+      <img src="/assets/lp-logo-blue.png" alt="Tom Bobet" width="700" height="329">
+      <h2 id="promo-title">Special offer</h2>
+      <p>Get a free creative brand audit when you book a call before <b>December 10th</b>.</p>
+      <a class="btn press" data-calendly href="https://calendly.com/tombobet/design-and-ecom" target="_blank" rel="noopener">Book a call <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <small><i></i><span data-spots>2 spots left</span></small>
+      <button type="button" class="later" data-close>No thanks</button>
+    </div>
+    <button type="button" class="x" data-close aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+</div>
+
+<div class="cursor" aria-hidden="true"><span>Drag</span></div>
 
 <script src="/assets/site.js"></script>
 <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
@@ -380,6 +502,106 @@
     fit(); show(0); next();
   })();
 
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Scroll reveals.
+  (function () {
+    var els = document.querySelectorAll("[data-reveal]");
+    if (still || !("IntersectionObserver" in window)) { els.forEach(function (e) { e.classList.add("in"); }); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { rootMargin: "0px 0px -8% 0px" });
+    els.forEach(function (e) { io.observe(e); });
+  })();
+
+  // Three reasons: accordion.
+  document.querySelectorAll(".acc button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var li = b.parentElement, open = !li.classList.contains("open");
+      li.classList.toggle("open", open); b.setAttribute("aria-expanded", open);
+    });
+  });
+
+  // Work carousel: glides on its own in a seamless loop; dragging, swiping, scrolling or the arrows take over,
+  // and the glide picks up again a few seconds after the visitor lets go.
+  (function () {
+    var rail = document.querySelector(".rail");
+    var prev = document.querySelector(".arrows .prev"), next = document.querySelector(".arrows .next");
+    var items = rail.querySelectorAll("li"), n = items.length / 2;
+    var SPEED = 0.45;                       // pixels per frame while gliding
+    var pos = 0, holdUntil = 0, hover = false, seen = false, down = false, sx = 0, sl = 0, moved = false;
+    function half() { return items[n].offsetLeft - items[0].offsetLeft; }
+    function step() { return items[1].offsetLeft - items[0].offsetLeft; }
+    function wrap() {
+      var h = half();
+      if (rail.scrollLeft >= h) rail.scrollLeft -= h;
+      else if (rail.scrollLeft <= 0) rail.scrollLeft += h;
+    }
+    function hold(ms) { holdUntil = performance.now() + (ms || 3500); }
+    function update() {}
+    function go(dir) { hold(); if (dir < 0 && rail.scrollLeft < step() + 2) rail.scrollLeft += half(); rail.scrollBy({ left: dir * step(), behavior: "smooth" }); }
+    prev.addEventListener("click", function () { go(-1); });
+    next.addEventListener("click", function () { go(1); });
+    ["wheel", "touchstart", "touchmove", "keydown"].forEach(function (t) { rail.addEventListener(t, function () { hold(); }, { passive: true }); });
+    rail.addEventListener("mouseenter", function () { hover = true; });
+    rail.addEventListener("mouseleave", function () { hover = false; hold(1200); });
+    rail.addEventListener("scroll", function () { update(); if (performance.now() < holdUntil || hover) wrap(); }, { passive: true });
+    addEventListener("resize", update);
+    // drag with the mouse on desktop (touch scrolls natively)
+    rail.addEventListener("pointerdown", function (e) { hold(); if (e.pointerType !== "mouse") return; down = true; moved = false; sx = e.clientX; sl = rail.scrollLeft; });
+    addEventListener("pointermove", function (e) { if (!down) return; var dx = e.clientX - sx; if (Math.abs(dx) > 4) { moved = true; rail.classList.add("dragging"); } rail.scrollLeft = sl - dx; hold(); });
+    addEventListener("pointerup", function () { if (!down) return; down = false; rail.classList.remove("dragging"); hold(); });
+    new IntersectionObserver(function (es) { seen = es[0].isIntersecting; }).observe(rail);
+    rail.scrollLeft = 1; pos = rail.scrollLeft;
+    (function loop() {
+      var busy = still || hover || down || !seen || document.hidden || performance.now() < holdUntil;
+      if (busy) pos = rail.scrollLeft;
+      else { pos += SPEED; if (pos >= half()) pos -= half(); rail.scrollLeft = pos; }
+      requestAnimationFrame(loop);
+    })();
+    update();
+  })();
+
+  // Promo pop-up: once per visit, as soon as the visitor starts scrolling down.
+  (function () {
+    var promo = document.getElementById("promo"), sec = document.getElementById("reasons"), last = null, shown = false;
+    try { if (sessionStorage.getItem("promoSeen")) { promo.remove(); return; } } catch (e) {}
+    function open() {
+      if (shown || document.documentElement.classList.contains("intro-on")) return;
+      shown = true; try { sessionStorage.setItem("promoSeen", "1"); } catch (e) {}
+      last = document.activeElement; promo.setAttribute("aria-hidden", "false"); promo.classList.add("show");
+      setTimeout(function () { promo.querySelector(".copy .btn").focus({ preventScroll: true }); }, 60);
+    }
+    function close() {
+      promo.classList.remove("show"); promo.setAttribute("aria-hidden", "true");
+      if (last && last.focus) last.focus({ preventScroll: true });
+      setTimeout(function () { promo.remove(); }, 500);
+    }
+    promo.querySelectorAll("[data-close]").forEach(function (b) { b.addEventListener("click", close); });
+    promo.querySelector(".copy .btn").addEventListener("click", function () { setTimeout(close, 50); });
+    addEventListener("keydown", function (e) { if (e.key === "Escape" && promo.classList.contains("show")) close(); });
+    function onScroll() {
+      if (window.scrollY < 40 || document.documentElement.classList.contains("intro-on")) return;
+      removeEventListener("scroll", onScroll); setTimeout(open, 250);
+    }
+    addEventListener("scroll", onScroll, { passive: true });
+  })();
+
+  // Custom cursor on desktop: a small blue dot that grows over links and says "Drag" over the projects.
+  (function () {
+    if (still || !matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    var c = document.querySelector(".cursor"), x = -100, y = -100, cx = x, cy = y;
+    addEventListener("pointermove", function (e) {
+      if (e.pointerType !== "mouse") return;
+      x = e.clientX; y = e.clientY; c.classList.add("on");
+      var t = e.target;
+      c.classList.toggle("drag", !!t.closest(".rail"));
+      c.classList.toggle("link", !t.closest(".rail") && !!t.closest("a, button"));
+      c.classList.toggle("light", !!t.closest(".reasons, .hero, .card") && !t.closest(".talk"));
+    });
+    document.addEventListener("pointerleave", function () { c.classList.remove("on"); });
+    (function loop() { cx += (x - cx) * .25; cy += (y - cy) * .25; c.style.transform = "translate(" + cx + "px," + cy + "px)"; requestAnimationFrame(loop); })();
+  })();
 </script>
 </body>
 </html>
